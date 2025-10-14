@@ -13,7 +13,7 @@
       display: none !important;
     }
   </style>
-  
+
   @vite('resources/css/app.css')
 </head>
 <body class="antialiased">

@@ -1,11 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\Auth\RegisterController;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\OperatorController;
-use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\KategoriController;
 
 // -- HALAMAN UTAMA --
 Route::get('/', function () {
