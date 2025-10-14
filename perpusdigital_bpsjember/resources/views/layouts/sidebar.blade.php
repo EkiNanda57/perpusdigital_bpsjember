@@ -10,7 +10,7 @@
 
     <!-- sidebar -->
     <aside id="sidebar"
-        class="bg-gradient-to-b from-orange-400 to-yellow-300 text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full 
+        class="bg-gradient-to-b from-orange-400 to-yellow-300 text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full
                md:relative md:translate-x-0 transition duration-200 ease-in-out shadow-lg z-50">
 
         <!-- Logo -->
@@ -27,7 +27,7 @@
         </nav>
     </aside>
 
-    
+
     <div id="overlay" class="fixed inset-0 hidden z-40 md:hidden"></div>
 
     {{-- konten utama --}}
@@ -48,8 +48,14 @@
             </div>
 
             <div>
-                <span class="text-gray-700 font-medium">Halo, Admin 👋</span>
+                <span class="text-gray-700 font-medium">
+                @php
+                        $role = auth()->user()->roles->first()->role_name;
+                @endphp
+                    Halo, {{ auth()->user()->name }} ({{ $role }})
+                </span>
             </div>
+
         </header>
 
         <!-- konten -->
