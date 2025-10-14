@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->timestamps();
         });
 
         // Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -34,9 +35,6 @@ return new class extends Migration
         // });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('users');
