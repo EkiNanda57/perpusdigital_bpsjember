@@ -21,6 +21,7 @@
 
         <!-- Menu Sidebar -->
         <nav class="mt-10 flex flex-col space-y-2">
+<<<<<<< Updated upstream
             @php
                 $user = auth()->user();
                 $role = $user && $user->roles->isNotEmpty()
@@ -49,6 +50,11 @@
                 <a href="#"
                    class="font-semibold hover:bg-orange-500 px-4 py-2 rounded-md transition">Publikasi</a>
             @endif
+=======
+            <a href="#" class="font-semibold hover:bg-orange-500 px-4 py-2 rounded-md transition">Dashboard</a>
+            <a href="{{ route('kategori.kategori') }}" class="font-semibold hover:bg-orange-500 px-4 py-2 rounded-md transition">Kategori</a>
+            <a href="{{ route('publikasi.publikasi') }}" class="font-semibold hover:bg-orange-500 px-4 py-2 rounded-md transition">Publikasi</a>
+>>>>>>> Stashed changes
         </nav>
     </aside>
 
