@@ -51,10 +51,10 @@ class PublikasiController extends Controller
             'file_path' => $path,
             'tipe_file' => $request->file('file_publikasi')->extension(),
             'status' => $request->status,
-            'uploaded_by' => 1, // Ganti dengan user login jika ada sistem auth
+            'uploaded_by' => auth()->id(), 
         ]);
 
-        return redirect()->route('publikasi.index')->with('success', 'Publikasi berhasil ditambahkan.');
+        return redirect()->route('publikasi.publikasi')->with('success', 'Publikasi berhasil ditambahkan.');
     }
 
     /**
@@ -64,7 +64,7 @@ class PublikasiController extends Controller
     {
         // Ambil juga semua kategori untuk dropdown
         $kategoris = Kategori::orderBy('nama_kategori', 'asc')->get();
-        return view('publikasi.edit', compact('publikasi', 'kategoris'));
+        return view('publikasi.editpublikasi', compact('publikasi', 'kategoris'));
     }
 
     /**
@@ -96,7 +96,7 @@ class PublikasiController extends Controller
             'status' => $request->status,
         ]);
 
-        return redirect()->route('publikasi.index')->with('success', 'Publikasi berhasil diperbarui.');
+        return redirect()->route('publikasi.publikasi')->with('success', 'Publikasi berhasil diperbarui.');
     }
 
     /**
