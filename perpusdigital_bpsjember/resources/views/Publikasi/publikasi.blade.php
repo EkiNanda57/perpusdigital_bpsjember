@@ -60,11 +60,16 @@
                             @endif
                         </td>
                         <td class="px-4 py-3 text-center">
-                            <a href="{{ asset('storage/' . $item->file_path) }}" target="_blank"
-                               class="text-blue-500 hover:underline">
+                            @if($item->file_path)
+                                <a href="{{ route('publikasi.detailpublikasi', $item->id) }}"
+                               class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-sm rounded-md transition duration-300">
                                 Lihat
                             </a>
+                            @else
+                                <span class="text-gray-400 text-sm">Tidak ada file</span>
+                            @endif
                         </td>
+
                         <td class="px-4 py-3 flex justify-center items-center gap-2">
                             {{-- Tombol Edit --}}
                             <a href="{{ route('publikasi.editpublikasi', $item->id) }}"

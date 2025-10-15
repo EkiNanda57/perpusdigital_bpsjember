@@ -13,7 +13,7 @@ class Kategori extends Model
     protected $fillable = ['nama_kategori'];
     public $timestamps = false; // karena di migration tidak ada timestamps
 
-    public function publikasi()
+    public function publikasis()
     {
         return $this->hasMany(Publikasi::class, 'kategori_id');
     }

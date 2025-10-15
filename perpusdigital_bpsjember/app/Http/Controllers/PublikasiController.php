@@ -108,4 +108,28 @@ class PublikasiController extends Controller
         $publikasi->delete();
         return redirect()->route('publikasi.index')->with('success', 'Publikasi berhasil dihapus.');
     }
+
+
+    public function show($id)
+{
+    $publikasi = Publikasi::with('kategori')->findOrFail($id);
+    return view('publikasi.detailpublikasi', compact('publikasi'));
 }
+
+public function unduh($id)
+{
+    $publikasi = Publikasi::findOrFail($id); 
+    $filePath = storage_path('app/public/' . $publikasi->file_path);
+
+    if (file_exists($filePath)) {
+        return response()->download($filePath);
+    } else {
+        return back()->with('error', 'File tidak ditemukan.');
+    }
+}
+
+
+
+}
+
+
