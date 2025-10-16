@@ -149,16 +149,13 @@ class PublikasiController extends Controller
      * Unduh file publikasi.
      */
     public function unduh($id)
-    {
-        $publikasi = Publikasi::findOrFail($id);
-        $filePath = storage_path('app/public/' . $publikasi->file_path);
+{
+    $publikasi = Publikasi::findOrFail($id);
+    $path = storage_path('app/public/' . $publikasi->file_path);
 
-        if (file_exists($filePath)) {
-            return response()->download($filePath);
-        } else {
-            return back()->with('error', 'File tidak ditemukan.');
-        }
-    }
+    return response()->download($path, $publikasi->original_name);
+}
+
 
     /**
      * Validasi publikasi (khusus admin).
