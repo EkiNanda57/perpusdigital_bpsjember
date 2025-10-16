@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
+use App\Models\AdminProfil;
+use App\Models\OperatorProfil;
+use App\Models\PenggunaProfil;
 
 class User extends Authenticatable
 {
@@ -33,6 +36,24 @@ class User extends Authenticatable
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+    }
+
+    // Relasi ke tabel profil Admin
+    public function adminProfile()
+    {
+        return $this->hasOne(AdminProfil::class);
+    }
+
+    // Relasi ke tabel profil Operator
+    public function operatorProfile()
+    {
+        return $this->hasOne(OperatorProfil::class);
+    }
+
+    // Relasi ke tabel profil Pengguna
+    public function penggunaProfile()
+    {
+        return $this->hasOne(PenggunaProfil::class);
     }
 
     // ✅ Cek apakah user punya role tertentu

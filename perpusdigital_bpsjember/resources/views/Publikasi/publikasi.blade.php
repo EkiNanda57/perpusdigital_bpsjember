@@ -1,11 +1,11 @@
 @extends('layouts.sidebar')
 
 @section('content')
-
 <div class="container mx-auto px-4 py-8">
     {{-- Header --}}
     <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-orange-500 mb-4 sm:mb-0">Data Publikasi</h2>
+        @if(auth()->user()->hasRole('operator'))
         <a href="{{ route('publikasi.create') }}"
            class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center">
             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -15,7 +15,8 @@
             </svg>
             Tambah Publikasi
         </a>
-    </div>
+    @endif
+</div>
 
     {{-- Session Success Message --}}
     @if(session('success'))
@@ -27,7 +28,7 @@
 
     {{-- Tabel Data --}}
     <div class="overflow-x-auto bg-white shadow-md rounded-lg">
-        <table class="min-w-full table-auto border-collapse">
+        <table class="min-w-full table-auto border-collapse hidden md:table">
             <thead class="bg-orange-500 text-white">
                 <tr>
                     <th class="px-4 py-3 text-left text-sm font-semibold">No</th>
@@ -49,61 +50,135 @@
                             {{ $item->kategori->nama_kategori ?? 'Tanpa Kategori' }}
                         </td>
                         <td class="px-4 py-3">
-                            @if($item->status == 'published')
-                                <span class="bg-green-200 text-green-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">
-                                    Published
-                                </span>
-                            @else
-                                <span class="bg-yellow-200 text-yellow-800 text-xs font-semibold mr-2 px-2.5 py-0.5 rounded-full">
-                                    Draft
-                                </span>
-                            @endif
+                            @switch($item->status)
+                                @case('tertunda')
+                                    <span class="bg-yellow-200 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Tertunda</span>
+                                    @break
+                                @case('diterima')
+                                    <span class="bg-green-200 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Diterima</span>
+                                    @break
+                                @case('ditolak')
+                                    <span class="bg-red-200 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Ditolak</span>
+                                    @break
+                                @default
+                                    <span class="bg-gray-200 text-gray-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Draft</span>
+                            @endswitch
                         </td>
                         <td class="px-4 py-3 text-center">
                             @if($item->file_path)
                                 <a href="{{ route('publikasi.detailpublikasi', $item->id) }}"
-                               class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-sm rounded-md transition duration-300">
-                                Lihat
-                            </a>
+                                   class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-sm rounded-md transition duration-300">
+                                   Lihat
+                                </a>
                             @else
                                 <span class="text-gray-400 text-sm">Tidak ada file</span>
                             @endif
                         </td>
-
                         <td class="px-4 py-3 flex justify-center items-center gap-2">
-                            {{-- Tombol Edit --}}
-                            <a href="{{ route('publikasi.editpublikasi', $item->id) }}"
-                               class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-sm rounded-md transition duration-300">
-                                Edit
-                            </a>
+                            {{-- Tombol Edit (admin & operator) --}}
+                            @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('operator'))
+                                <a href="{{ route('publikasi.editpublikasi', $item->id) }}"
+                                   class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-sm rounded-md transition duration-300">
+                                    Edit
+                                </a>
+                            @endif
 
-                            {{-- Tombol Hapus --}}
-                            <form action="{{ route('publikasi.destroy', $item->id) }}" method="POST"
-                                  onsubmit="return confirm('Apakah Anda yakin ingin menghapus publikasi ini?')">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit"
-                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-sm rounded-md transition duration-300">
-                                    Hapus
-                                </button>
-                            </form>
+                            {{-- Tombol Validasi (admin & status tertunda) --}}
+                            @if(auth()->user()->hasRole('admin') && $item->status === 'tertunda')
+                                {{-- Terima --}}
+                                <form action="{{ route('publikasi.approve', $item->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit"
+                                        class="flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-3 py-1 text-sm rounded-md transition duration-300"
+                                        title="Terima Publikasi">
+                                        <span>Terima</span>
+                                    </button>
+                                </form>
+
+                                {{-- Tolak --}}
+                                <form action="{{ route('publikasi.reject', $item->id) }}" method="POST" class="inline">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit"
+                                        class="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-sm rounded-md transition duration-300"
+                                        title="Tolak Publikasi">
+                                        <span>Tolak</span>
+                                    </button>
+                                </form>
+                            @endif
                         </td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center text-gray-500 py-6">
-                            Belum ada data publikasi.
-                        </td>
+                        <td colspan="6" class="text-center text-gray-500 py-6">Belum ada data publikasi.</td>
                     </tr>
                 @endforelse
             </tbody>
         </table>
+
+        {{-- Mobile Version --}}
+        <div class="md:hidden">
+            @forelse($publikasi as $index => $item)
+                <div class="border rounded-lg p-4 mb-4 shadow-sm">
+                    <div class="flex justify-between items-center mb-2">
+                        <h3 class="font-semibold text-gray-800">{{ $item->judul }}</h3>
+                        <span class="text-xs px-2 py-1 rounded-full 
+                            @if($item->status === 'tertunda') bg-yellow-200 text-yellow-800 
+                            @elseif($item->status === 'diterima') bg-green-200 text-green-800 
+                            @elseif($item->status === 'ditolak') bg-red-200 text-red-800 
+                            @else bg-gray-200 text-gray-800 @endif">
+                            {{ ucfirst($item->status) }}
+                        </span>
+                    </div>
+                    <p class="text-sm text-gray-600 mb-3">
+                        Kategori: <span class="font-medium">{{ $item->kategori->nama_kategori ?? 'Tanpa Kategori' }}</span>
+                    </p>
+
+                    {{-- Tombol Aksi --}}
+                    <div class="flex flex-wrap gap-2">
+                        <a href="{{ route('publikasi.detailpublikasi', $item->id) }}"
+                           class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-sm rounded-md transition">
+                            Lihat
+                        </a>
+
+                        @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('operator'))
+                            <a href="{{ route('publikasi.editpublikasi', $item->id) }}"
+                               class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-sm rounded-md transition">
+                                Edit
+                            </a>
+                        @endif
+
+                        @if(auth()->user()->hasRole('admin') && $item->status === 'tertunda')
+                            <form action="{{ route('publikasi.approve', $item->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit"
+                                    class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 text-sm rounded-md transition">
+                                    Terima
+                                </button>
+                            </form>
+
+                            <form action="{{ route('publikasi.reject', $item->id) }}" method="POST" class="inline">
+                                @csrf
+                                @method('PATCH')
+                                <button type="submit"
+                                    class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-sm rounded-md transition">
+                                    Tolak
+                                </button>
+                            </form>
+                        @endif
+                    </div>
+                </div>
+            @empty
+                <p class="text-center text-gray-500 py-6">Belum ada data publikasi.</p>
+            @endforelse
+        </div>
     </div>
 
     {{-- Pagination --}}
     <div class="mt-6">
         {{ $publikasi->links('pagination::tailwind') }}
     </div>
-
 </div>
 @endsection

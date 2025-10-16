@@ -10,12 +10,33 @@ use Illuminate\Support\Facades\Storage;
 class PublikasiController extends Controller
 {
     /**
-     * Menampilkan daftar semua publikasi.
+     * Menampilkan daftar publikasi sesuai role user.
      */
     public function index()
     {
-        // Gunakan with('kategori') untuk Eager Loading (lebih efisien)
-        $publikasi = Publikasi::with('kategori')->latest()->paginate(10);
+        $user = auth()->user();
+
+        if ($user->hasRole('admin')) {
+            // Admin bisa melihat semua publikasi
+            $publikasi = Publikasi::with('kategori')->latest()->paginate(10);
+        } 
+        elseif ($user->hasRole('operator')) {
+            // Operator hanya bisa melihat publikasi yang dia upload
+            // dan hanya yang berstatus tertunda atau diterima
+            $publikasi = Publikasi::with('kategori')
+                ->where('uploaded_by', $user->id)
+                ->whereIn('status', ['tertunda', 'diterima'])
+                ->latest()
+                ->paginate(10);
+        } 
+        else {
+            // Pengguna umum hanya bisa melihat publikasi yang sudah diterima
+            $publikasi = Publikasi::with('kategori')
+                ->where('status', 'diterima')
+                ->latest()
+                ->paginate(10);
+        }
+
         return view('publikasi.publikasi', compact('publikasi'));
     }
 
@@ -24,7 +45,6 @@ class PublikasiController extends Controller
      */
     public function create()
     {
-        // Mengambil semua data kategori, diurutkan berdasarkan nama
         $kategoris = Kategori::orderBy('nama_kategori', 'asc')->get();
         return view('publikasi.create', compact('kategoris'));
     }
@@ -97,7 +117,7 @@ class PublikasiController extends Controller
     }
 
     /**
-     * Memperbarui data publikasi di database.
+     * Memperbarui publikasi.
      */
     public function update(Request $request, Publikasi $publikasi)
 {
@@ -146,17 +166,22 @@ class PublikasiController extends Controller
     {
         Storage::disk('public')->delete($publikasi->file_path);
         $publikasi->delete();
-        return redirect()->route('publikasi.index')->with('success', 'Publikasi berhasil dihapus.');
+        return redirect()->route('publikasi.publikasi')->with('success', 'Publikasi berhasil dihapus.');
     }
 
-
+    /**
+     * Detail publikasi.
+     */
     public function show($id)
-{
-    $publikasi = Publikasi::with('kategori')->findOrFail($id);
-    return view('publikasi.detailpublikasi', compact('publikasi'));
-}
+    {
+        $publikasi = Publikasi::with('kategori')->findOrFail($id);
+        return view('publikasi.detailpublikasi', compact('publikasi'));
+    }
 
-public function unduh($id)
+    /**
+     * Unduh file publikasi.
+     */
+    public function unduh($id)
 {
     $publikasi = Publikasi::findOrFail($id);
 
@@ -178,8 +203,37 @@ public function unduh($id)
 }
 
 
+    /**
+     * Validasi publikasi (khusus admin).
+     */
+    public function validasi(Request $request, $id)
+    {
+        $publikasi = Publikasi::findOrFail($id);
 
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403, 'Akses ditolak.');
+        }
 
+        $request->validate([
+            'status' => 'required|in:diterima,ditolak',
+        ]);
+
+        $publikasi->update(['status' => $request->status]);
+
+        return redirect()->back()->with('success', 'Publikasi berhasil divalidasi sebagai ' . $request->status . '.');
+    }
+
+    public function approve($id)
+    {
+        $publikasi = Publikasi::findOrFail($id);
+        $publikasi->update(['status' => 'diterima']);
+        return redirect()->back()->with('success', 'Publikasi diterima.');
+    }
+
+    public function reject($id)
+    {
+        $publikasi = Publikasi::findOrFail($id);
+        $publikasi->update(['status' => 'ditolak']);
+        return redirect()->back()->with('success', 'Publikasi ditolak.');
+    }
 }
-
-

@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PublikasiController;
 
@@ -54,4 +55,17 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/publikasi/unduh/{id}', [PublikasiController::class, 'unduh'])
     ->name('publikasi.unduh');
 
+    Route::patch('/publikasi/{id}/approve', [PublikasiController::class, 'approve'])->name('publikasi.approve');
+    Route::patch('/publikasi/{id}/reject', [PublikasiController::class, 'reject'])->name('publikasi.reject');
+
+
+});
+
+// profil user
+Route::middleware(['auth'])->group(function () {
+    // Rute untuk menampilkan halaman profil
+    Route::get('/profile', [ProfilController::class, 'show'])->name('profile.show');
+
+    // Rute untuk menyimpan perubahan profil
+    Route::post('/profile/update', [ProfilController::class, 'update'])->name('profile.update');
 });
