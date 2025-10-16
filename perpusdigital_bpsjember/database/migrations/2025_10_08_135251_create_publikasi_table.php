@@ -16,9 +16,10 @@ return new class extends Migration
 
             // FK ke tabel categories
             $table->unsignedBigInteger('id_kategori')->nullable();
-
-            $table->enum('tipe_file', ['pdf', 'ppt', 'docx', 'jpg', 'png', 'mp4', 'link']);
+            $table->string('tipe_file', 50)->nullable();
             $table->string('file_path', 255)->nullable();
+            $table->string('original_name')->nullable();
+
 
             // FK ke users (pengunggah)
             $table->unsignedBigInteger('uploaded_by')->nullable();

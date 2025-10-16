@@ -62,9 +62,12 @@
             <div class="mb-6">
                 <label for="file_publikasi" class="block text-gray-700 text-sm font-bold mb-2">Upload File <span class="text-red-500">*</span></label>
                 <input type="file" id="file_publikasi" name="file_publikasi"
-                       class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500" required>
-                <p class="mt-1 text-xs text-gray-500">Tipe file: PDF, EPUB, DOCX. Maksimal ukuran: 10MB.</p>
-            </div>
+       accept=".pdf,.epub,.docx,.xlsx,.xls"
+       class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500" required>
+        <p class="mt-1 text-xs text-gray-500">
+           Tipe file: PDF, EPUB, DOCX, XLSX, XLS. Maksimal ukuran: 10MB.
+        </p>
+
 
             {{-- Input Status --}}
             <div class="mb-6">

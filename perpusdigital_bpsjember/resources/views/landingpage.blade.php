@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Library - BPS Kabupaten Jember</title>
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+    </style>
     @vite('resources/css/app.css')
 </head>
 <body class="bg-white font-sans flex flex-col min-h-screen">
@@ -12,15 +17,15 @@
     <header class="bg-white shadow-md">
         <div class="container mx-auto flex justify-between items-center py-4 px-6">
             <!-- Logo -->
-            <div class="flex items-center space-x-2">
+            <div  id="beranda" class="flex items-center space-x-2">
                 <img src="{{ asset('logo/logose.png') }}" alt="Logo BPS" class="w-14 h-14">
             </div>
 
             <!-- Desktop Navigation -->
             <nav class="hidden md:flex space-x-8 text-orange-500 font-semibold">
-                <a href="#" class="hover:text-orange-600">Beranda</a>
-                <a href="#" class="hover:text-orange-600">Publikasi</a>
-                <a href="#" class="hover:text-orange-600">Tentang Kami</a>
+                <a href="#beranda" class="hover:text-orange-600">Beranda</a>
+                <a href="/login" class="hover:text-orange-600">Publikasi</a>
+                <a href="#tentang-kami" class="hover:text-orange-600">Tentang Kami</a>
             </nav>
 
             <!-- Mobile Menu Button -->
@@ -34,72 +39,136 @@
 
         <!-- Mobile Navigation -->
         <div id="mobile-menu" class="hidden md:hidden bg-white px-6 pb-4 space-y-3 text-orange-500 font-semibold">
-            <a href="#" class="block hover:text-orange-600">Beranda</a>
-            <a href="#" class="block hover:text-orange-600">Publikasi</a>
-            <a href="#" class="block hover:text-orange-600">Tentang Kami</a>
+            <a href="#beranda" class="block hover:text-orange-600">Beranda</a>
+            <a href="/login" class="block hover:text-orange-600">Publikasi</a>
+            <a href="#tentang-kami" class="block hover:text-orange-600">Tentang Kami</a>
         </div>
     </header>
 
     <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-orange-400 to-yellow-400 text-white text-center py-16 px-6">
-        <div class="max-w-2xl mx-auto">
-            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 leading-snug">
-                Selamat Datang di Digital Library <br class="hidden sm:block">BPS Kabupaten Jember
-            </h1>
-            <p class="text-base sm:text-lg mb-8">
-                Penyedia publikasi internal segala kebutuhan data
-            </p>
+    <section class="bg-gradient-to-r from-orange-400 to-yellow-400 text-white text-center py-16 px-6 relative overflow-hidden">
+    <div class="max-w-2xl mx-auto relative z-10">
+        <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 leading-snug">
+            Selamat Datang di Digital Library <br class="hidden sm:block">BPS Kabupaten Jember
+        </h1>
+        <p class="text-base sm:text-lg mb-8">
+            Penyedia publikasi internal segala kebutuhan data
+        </p>
 
-            <div class="flex flex-col sm:flex-row justify-center gap-4">
-                <a href="/register" class="border border-white px-6 py-2 rounded font-semibold hover:bg-white hover:text-orange-500 transition">
-                    Sign In
-                </a>
-                <a href="/login" class="border border-white px-6 py-2 rounded font-semibold hover:bg-white hover:text-orange-500 transition">
-                    Log In
-                </a>
-            </div>
+        <div class="flex flex-col sm:flex-row justify-center gap-4">
+            <a href="/register" class="border border-white px-6 py-2 rounded font-semibold hover:bg-white hover:text-orange-500 transition">
+                Sign In
+            </a>
+            <a href="/login" class="border border-white px-6 py-2 rounded font-semibold hover:bg-white hover:text-orange-500 transition">
+                Log In
+            </a>
         </div>
-    </section>
+    </div>
 
-    <section class="container mx-auto py-10 px-6 text-center">
+    <!-- 🔹 Lengkungan bawah (wave) -->
+    <svg class="absolute bottom-0 left-0 w-full h-24 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <path fill="currentColor" d="M0,224L60,208C120,192,240,160,360,165.3C480,171,600,213,720,218.7C840,224,960,192,1080,186.7C1200,181,1320,203,1380,213.3L1440,224L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+    </svg>
+</section>
+
+    <section id="publikasi" class="container mx-auto py-10 px-6 text-center">
     <!-- Judul di atas card -->
     <h2 class="text-2xl sm:text-3xl text-orange-500 font-semibold mb-4">
         Publikasi
     </h2>
 
-    <!-- Category Cards -->
-    <section class="container mx-auto py-12 px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 text-center">
+<!-- Category Cards -->
+<section id="publikasi" class="container mx-auto py-12 px-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 text-center">
+    
     <!-- Card Penduduk -->
-    <div class="rounded-xl bg-gradient-to-r from-[#01A2E9] to-[#2473BA] flex flex-col justify-between items-center py-8 h-56 hover:scale-[1.03] transition-transform duration-300 shadow-md">
-        <img src="{{ asset('logo/Sensus Penduduk.png') }}" alt="Penduduk"
-             class="w-40 h-40 object-contain mb-4">
+    <div class="card rounded-xl bg-gradient-to-r from-[#01A2E9] to-[#2473BA] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md opacity-0 translate-y-6">
+        <img src="{{ asset('logo/Sensus Penduduk.png') }}" alt="Penduduk" class="w-32 h-32 object-contain mb-4">
         <h3 class="text-white font-bold text-xl mb-2">Penduduk</h3>
+        <p class="text-white text-sm px-4">Mengumpulkan dan Menyajikan data dasar kependudukan sampai wilayah administrasi terkecil</p>
     </div>
 
     <!-- Card Pertanian -->
-    <div class="rounded-xl bg-gradient-to-r from-[#2AB930] to-[#88C64A] flex flex-col justify-between items-center py-8 h-56 hover:scale-[1.03] transition-transform duration-300 shadow-md">
-        <img src="{{ asset('logo/Sensus Pertanian.png') }}" alt="Pertanian"
-             class="w-40 h-40 object-contain mb-4">
+    <div class="card rounded-xl bg-gradient-to-r from-[#2AB930] to-[#88C64A] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md opacity-0 translate-y-6">
+        <img src="{{ asset('logo/Sensus Pertanian.png') }}" alt="Pertanian" class="w-32 h-32 object-contain mb-4">
         <h3 class="text-white font-bold text-xl mb-2">Pertanian</h3>
+        <p class="text-white text-sm px-4">Memberikan gambaran secara aktual mengenai kondisi pertanian di Indonesia</p>
     </div>
 
     <!-- Card Ekonomi -->
-    <div class="rounded-xl bg-gradient-to-r from-[#F7931E] to-[#FDC830] flex flex-col justify-between items-center py-8 h-56 hover:scale-[1.03] transition-transform duration-300 shadow-md">
-        <img src="{{ asset('logo/Sensus Ekonomi.png') }}" alt="Ekonomi"
-             class="w-40 h-40 object-contain mb-4">
+    <div class="card rounded-xl bg-gradient-to-r from-[#F7931E] to-[#FDC830] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md opacity-0 translate-y-6">
+        <img src="{{ asset('logo/Sensus Ekonomi.png') }}" alt="Ekonomi" class="w-32 h-32 object-contain mb-4">
         <h3 class="text-white font-bold text-xl mb-2">Ekonomi</h3>
+        <p class="text-white text-sm px-4">Memberikan gambaran secara aktual mengenai kondisi ekonomi di seluruh lapangan usaha pertanian di Indonesia</p>
     </div>
 </section>
 
+<!-- Animasi Scroll Muncul -->
+<script>
+    const cards = document.querySelectorAll('.card');
 
+    const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.remove('opacity-0', 'translate-y-6');
+                entry.target.classList.add('opacity-100', 'translate-y-0', 'transition-all', 'duration-1000', 'ease-out');
+            }
+        });
+    }, { threshold: 0.2 });
+
+    cards.forEach(card => observer.observe(card));
+</script>
 
 </section>
-
-
-
     <!-- Footer -->
-    <footer class="mt-auto bg-gradient-to-r from-orange-400 to-yellow-400 text-white text-center py-4">
-        <p>2025 Digital Library - BPS Kabupaten Jember</p>
+    <footer id="tentang-kami" class="mt-auto bg-gradient-to-r from-yellow-400 to-orange-400 text-white">
+        <div class="container mx-auto py-6 px-6">
+            <div class="flex items-center mb-8 pb-4 border-b border-white/40">
+                <img src="{{ asset('logo/logo-bps.png') }}" alt="Logo BPS" class="h-10 mr-4">
+                <span class="text-xl sm:text-2xl font-bold mb-2 leading-snu italic">BADAN PUSAT STATISTIK</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-10 text-sm">
+
+                <div>
+                    <h3 class="font-bold text-lg mb-3">Badan Pusat Statistik Kabupaten Jember</h3>
+                    <div class="space-y-1 text-white text-base font-sans">
+                        <p>Jl. Cendrawasih No.20, Puring, Slawu, Kec. Patrang, Kabupaten Jember</p>
+                        <p>Jawa Timur</p>
+                        <p>68116</p>
+                        <p>Indonesia</p>
+                        <p class="pt-3">Telp (0331) 487642</p>
+                        <p>Mailbox : bps3509@bps.go.id</p>
+                    </div>
+                    <div class="mt-6">
+                         <img src="logo/logo_footer.png" alt="BerAKHLAK Bangga Melayani Bangsa" class="w-65">
+                         
+                    </div>
+                </div>
+
+                <div class="md:pl-25">
+                    <h3 class="font-bold text-lg mb-3 items-center">Tentang Kami</h3>
+                    <div class="flex flex-col space-y-2 text-white text-base font-sans">
+                        <a href="https://jemberkab.bps.go.id/id" class="hover:text-gray-300 transition-colors">BPS Kabupaten Jember</a>
+                        <a href="https://ppid.bps.go.id/?mfd=0000" class="hover:text-gray-300 transition-colors">PPID</a>
+                    </div>
+                </div>
+
+                <div class="md:pl-15">
+                <h3 class="font-bold text-lg mb-3">Sosial Media</h3>
+                <div class="flex items-center space-x-4">
+                    <a href="https://www.instagram.com/bpsjember?igsh=b2d1Z2h2ZWl6Ympl" title="Instagram" class="hover:opacity-80 transition-opacity">
+                        <img src="logo/social.png" alt="Instagram" class="w-10 h-10">
+                    </a>
+                    <a href="https://www.tiktok.com/@bpsjember?_t=ZS-90YhqYibmtg&_r=1" title="Tik Tok" class="hover:opacity-80 transition-opacity">
+                        <img src="logo/tik-tok.png" alt="YouTube" class="w-10 h-10">
+                    </a>
+                    <a href="https://youtube.com/@bpskabupatenjember?si=SIM_ocnH3-Cet8mY" title="YouTube" class="hover:opacity-80 transition-opacity">
+                        <img src="logo/youtube.png" alt="YouTube" class="w-10 h-10">
+                    </a>
+                </div>
+            </div>
+            </div>
+        </div>
     </footer>
 
     <!-- Script for Mobile Menu -->

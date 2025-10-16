@@ -10,12 +10,33 @@ use Illuminate\Support\Facades\Storage;
 class PublikasiController extends Controller
 {
     /**
-     * Menampilkan daftar semua publikasi.
+     * Menampilkan daftar publikasi sesuai role user.
      */
     public function index()
     {
-        // Gunakan with('kategori') untuk Eager Loading (lebih efisien)
-        $publikasi = Publikasi::with('kategori')->latest()->paginate(10);
+        $user = auth()->user();
+
+        if ($user->hasRole('admin')) {
+            // Admin bisa melihat semua publikasi
+            $publikasi = Publikasi::with('kategori')->latest()->paginate(10);
+        } 
+        elseif ($user->hasRole('operator')) {
+            // Operator hanya bisa melihat publikasi yang dia upload
+            // dan hanya yang berstatus tertunda atau diterima
+            $publikasi = Publikasi::with('kategori')
+                ->where('uploaded_by', $user->id)
+                ->whereIn('status', ['tertunda', 'diterima'])
+                ->latest()
+                ->paginate(10);
+        } 
+        else {
+            // Pengguna umum hanya bisa melihat publikasi yang sudah diterima
+            $publikasi = Publikasi::with('kategori')
+                ->where('status', 'diterima')
+                ->latest()
+                ->paginate(10);
+        }
+
         return view('publikasi.publikasi', compact('publikasi'));
     }
 
@@ -24,7 +45,6 @@ class PublikasiController extends Controller
      */
     public function create()
     {
-        // Mengambil semua data kategori, diurutkan berdasarkan nama
         $kategoris = Kategori::orderBy('nama_kategori', 'asc')->get();
         return view('publikasi.create', compact('kategoris'));
     }
@@ -33,65 +53,72 @@ class PublikasiController extends Controller
      * Menyimpan publikasi baru ke database.
      */
     public function store(Request $request)
-    {
-        // Validasi input, termasuk id_kategori
-        $request->validate([
-            'id_kategori' => 'required|exists:kategori,id',
-            'judul' => 'required|string|max:255',
-            'file_publikasi' => 'required|file|mimes:pdf,epub,docx|max:10240',
-            'status' => 'required|in:tertunda,diterima,ditolak',
-        ]);
+{
+    $request->validate([
+        'id_kategori' => 'required|exists:kategori,id',
+        'judul' => 'required|string|max:255',
+        'file_publikasi' => 'required|mimes:pdf,epub,docx,xlsx,xls|max:10240',
+        'status' => 'required|in:tertunda,diterima,ditolak',
+    ]);
 
-        $path = $request->file('file_publikasi')->store('publikasi', 'public');
+    $file = $request->file('file_publikasi');
+    $filename = $file->getClientOriginalName(); // ambil nama asli file
+    $path = $file->storeAs('publikasi', $filename, 'public'); // simpan dengan nama aslinya
 
-        Publikasi::create([
-            'id_kategori' => $request->id_kategori, // ✅ disesuaikan dengan kolom di DB
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-            'file_path' => $path,
-            'tipe_file' => $request->file('file_publikasi')->extension(),
-            'status' => $request->status,
-            'uploaded_by' => auth()->id(), 
-        ]);
+    Publikasi::create([
+        'id_kategori' => $request->id_kategori,
+        'judul' => $request->judul,
+        'deskripsi' => $request->deskripsi,
+        'file_path' => $path,
+        'original_name' => $file->getClientOriginalName(),
+        'tipe_file' => $file->extension(),
+        'status' => $request->status,
+        'uploaded_by' => auth()->id(),
+    ]);
 
-        return redirect()->route('publikasi.publikasi')->with('success', 'Publikasi berhasil ditambahkan.');
-    }
+    return redirect()->route('publikasi.publikasi')->with('success', 'Publikasi berhasil ditambahkan.');
+}
 
     /**
      * Menampilkan form untuk mengedit publikasi.
      */
     public function edit(Publikasi $publikasi)
     {
-        // Ambil juga semua kategori untuk dropdown
         $kategoris = Kategori::orderBy('nama_kategori', 'asc')->get();
         return view('publikasi.editpublikasi', compact('publikasi', 'kategoris'));
     }
 
     /**
-     * Memperbarui data publikasi di database.
+     * Memperbarui publikasi.
      */
     public function update(Request $request, Publikasi $publikasi)
     {
-        $request->validate([
-            'id_kategori' => 'required|exists:kategori,id', // ✅ disesuaikan
-            'judul' => 'required|string|max:255',
-            'file_publikasi' => 'nullable|file|mimes:pdf,epub,docx|max:10240',
-            'status' => 'required|in:tertunda,diterima,ditolak',
-        ]);
+       $request->validate([
+    'judul' => 'required|string|max:255',
+    'deskripsi' => 'nullable|string',
+    'id_kategori' => 'required|exists:kategoris,id',
+    'file_publikasi' => 'required|mimes:pdf,epub,docx,xlsx,xls|max:10240', // 10MB = 10240 KB
+    'status' => 'required|in:tertunda,diterima,ditolak',
+]);
+
 
         $path = $publikasi->file_path;
-        if ($request->hasFile('file_publikasi')) {
-            Storage::disk('public')->delete($publikasi->file_path);
-            $path = $request->file('file_publikasi')->store('publikasi', 'public');
-        }
+        if ($request->hasFile('file')) {
+        $file = $request->file('file');
+        $originalName = $file->getClientOriginalName(); // nama asli
+        $filePath = $file->storeAs('publikasi', $originalName, 'public'); // simpan dengan nama asli
+
+        $publikasi->file_path = $filePath;
+    }
+
         
         $publikasi->update([
-            'id_kategori' => $request->id_kategori, // ✅ disesuaikan
+            'id_kategori' => $request->id_kategori,
             'judul' => $request->judul,
             'deskripsi' => $request->deskripsi,
             'file_path' => $path,
             'tipe_file' => $request->hasFile('file_publikasi') 
-                ? $request->file('file_publikasi')->extension() 
+                ? $request->file('file_publikasi')->extension()
                 : $publikasi->tipe_file,
             'status' => $request->status,
         ]);
@@ -106,6 +133,64 @@ class PublikasiController extends Controller
     {
         Storage::disk('public')->delete($publikasi->file_path);
         $publikasi->delete();
-        return redirect()->route('publikasi.index')->with('success', 'Publikasi berhasil dihapus.');
+        return redirect()->route('publikasi.publikasi')->with('success', 'Publikasi berhasil dihapus.');
+    }
+
+    /**
+     * Detail publikasi.
+     */
+    public function show($id)
+    {
+        $publikasi = Publikasi::with('kategori')->findOrFail($id);
+        return view('publikasi.detailpublikasi', compact('publikasi'));
+    }
+
+    /**
+     * Unduh file publikasi.
+     */
+    public function unduh($id)
+    {
+        $publikasi = Publikasi::findOrFail($id);
+        $filePath = storage_path('app/public/' . $publikasi->file_path);
+
+        if (file_exists($filePath)) {
+            return response()->download($filePath);
+        } else {
+            return back()->with('error', 'File tidak ditemukan.');
+        }
+    }
+
+    /**
+     * Validasi publikasi (khusus admin).
+     */
+    public function validasi(Request $request, $id)
+    {
+        $publikasi = Publikasi::findOrFail($id);
+
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403, 'Akses ditolak.');
+        }
+
+        $request->validate([
+            'status' => 'required|in:diterima,ditolak',
+        ]);
+
+        $publikasi->update(['status' => $request->status]);
+
+        return redirect()->back()->with('success', 'Publikasi berhasil divalidasi sebagai ' . $request->status . '.');
+    }
+
+    public function approve($id)
+    {
+        $publikasi = Publikasi::findOrFail($id);
+        $publikasi->update(['status' => 'diterima']);
+        return redirect()->back()->with('success', 'Publikasi diterima.');
+    }
+
+    public function reject($id)
+    {
+        $publikasi = Publikasi::findOrFail($id);
+        $publikasi->update(['status' => 'ditolak']);
+        return redirect()->back()->with('success', 'Publikasi ditolak.');
     }
 }

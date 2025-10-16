@@ -20,8 +20,9 @@ class Publikasi extends Model
         'uploaded_by',
     ];
 
-    public function kategori()
+        public function kategori()
     {
-        return $this->belongsTo(Kategori::class, 'kategori_id');
+        return $this->belongsTo(Kategori::class, 'id_kategori');
     }
+
 }

@@ -34,13 +34,13 @@
                    class="font-semibold hover:bg-orange-500 px-4 py-2 rounded-md transition">Dashboard</a>
                 <a href="{{ route('kategori.kategori') }}"
                    class="font-semibold hover:bg-orange-500 px-4 py-2 rounded-md transition">Kategori</a>
-                <a href="#"
+                <a href="{{ route('publikasi.publikasi') }}"
                    class="font-semibold hover:bg-orange-500 px-4 py-2 rounded-md transition">Publikasi</a>
 
             @elseif (strtolower($role) === 'operator')
                 <a href="{{ route('dashboard-user.operator-dashboard') }}"
                    class="font-semibold hover:bg-orange-500 px-4 py-2 rounded-md transition">Dashboard</a>
-                <a href="#"
+                <a href="{{ route('publikasi.publikasi') }}"
                    class="font-semibold hover:bg-orange-500 px-4 py-2 rounded-md transition">Kelola Publikasi</a>
 
             @else {{-- pengguna biasa --}}
