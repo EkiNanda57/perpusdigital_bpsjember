@@ -45,10 +45,12 @@
         <h3 class="font-semibold text-lg text-blue-900">File Publikasi</h3>
         @if($publikasi->file_path)
             <div class="mt-3 flex items-center gap-4">
-                <a href="{{ route('publikasi.unduh', $publikasi->id) }}" 
-            class="flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg shadow transition">
-             <span>Unduh File</span>
-                 </a>
+             <a href="{{ route('publikasi.unduh', $publikasi->id) }}" 
+            class="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600">
+            Unduh
+            </a>
+
+
 
         </div>
     @else

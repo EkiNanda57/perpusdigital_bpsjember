@@ -53,27 +53,31 @@ class PublikasiController extends Controller
      * Menyimpan publikasi baru ke database.
      */
     public function store(Request $request)
-    {
-        $request->validate([
-            'id_kategori' => 'required|exists:kategori,id',
-            'judul' => 'required|string|max:255',
-            'file_publikasi' => 'required|file|mimes:pdf,epub,docx|max:10240',
-        ]);
+{
+    $request->validate([
+        'id_kategori' => 'required|exists:kategori,id',
+        'judul' => 'required|string|max:255',
+        'file_publikasi' => 'required|mimes:pdf,epub,docx,xlsx,xls|max:10240',
+        'status' => 'required|in:tertunda,diterima,ditolak',
+    ]);
 
-        $path = $request->file('file_publikasi')->store('publikasi', 'public');
+    $file = $request->file('file_publikasi');
+    $filename = $file->getClientOriginalName(); // ambil nama asli file
+    $path = $file->storeAs('publikasi', $filename, 'public'); // simpan dengan nama aslinya
 
-        Publikasi::create([
-            'id_kategori' => $request->id_kategori,
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-            'file_path' => $path,
-            'tipe_file' => $request->file('file_publikasi')->extension(),
-            'status' => 'tertunda', // otomatis tertunda saat baru diupload
-            'uploaded_by' => auth()->id(),
-        ]);
+    Publikasi::create([
+        'id_kategori' => $request->id_kategori,
+        'judul' => $request->judul,
+        'deskripsi' => $request->deskripsi,
+        'file_path' => $path,
+        'original_name' => $file->getClientOriginalName(),
+        'tipe_file' => $file->extension(),
+        'status' => $request->status,
+        'uploaded_by' => auth()->id(),
+    ]);
 
-        return redirect()->route('publikasi.publikasi')->with('success', 'Publikasi berhasil ditambahkan dan menunggu persetujuan admin.');
-    }
+    return redirect()->route('publikasi.publikasi')->with('success', 'Publikasi berhasil ditambahkan.');
+}
 
     /**
      * Menampilkan form untuk mengedit publikasi.
@@ -89,19 +93,25 @@ class PublikasiController extends Controller
      */
     public function update(Request $request, Publikasi $publikasi)
     {
-        $request->validate([
-            'id_kategori' => 'required|exists:kategori,id',
-            'judul' => 'required|string|max:255',
-            'file_publikasi' => 'nullable|file|mimes:pdf,epub,docx|max:10240',
-            'status' => 'required|in:tertunda,diterima,ditolak',
-        ]);
+       $request->validate([
+    'judul' => 'required|string|max:255',
+    'deskripsi' => 'nullable|string',
+    'id_kategori' => 'required|exists:kategoris,id',
+    'file_publikasi' => 'required|mimes:pdf,epub,docx,xlsx,xls|max:10240', // 10MB = 10240 KB
+    'status' => 'required|in:tertunda,diterima,ditolak',
+]);
+
 
         $path = $publikasi->file_path;
-        if ($request->hasFile('file_publikasi')) {
-            Storage::disk('public')->delete($publikasi->file_path);
-            $path = $request->file('file_publikasi')->store('publikasi', 'public');
-        }
+        if ($request->hasFile('file')) {
+        $file = $request->file('file');
+        $originalName = $file->getClientOriginalName(); // nama asli
+        $filePath = $file->storeAs('publikasi', $originalName, 'public'); // simpan dengan nama asli
 
+        $publikasi->file_path = $filePath;
+    }
+
+        
         $publikasi->update([
             'id_kategori' => $request->id_kategori,
             'judul' => $request->judul,
