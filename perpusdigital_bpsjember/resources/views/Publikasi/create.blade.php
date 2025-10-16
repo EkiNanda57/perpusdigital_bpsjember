@@ -59,14 +59,13 @@
             </div>
 
             {{-- Input Upload File --}}
-            <div class="mb-6">
-                <label for="file_publikasi" class="block text-gray-700 text-sm font-bold mb-2">Upload File <span class="text-red-500">*</span></label>
-                <input type="file" id="file_publikasi" name="file_publikasi"
-       accept=".pdf,.epub,.docx,.xlsx,.xls"
-       class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 focus:outline-none focus:ring-2 focus:ring-orange-500" required>
-        <p class="mt-1 text-xs text-gray-500">
-           Tipe file: PDF, EPUB, DOCX, XLSX, XLS. Maksimal ukuran: 10MB.
-        </p>
+            <div class="mb-4">
+    <label for="file_publikasi" class="block font-semibold text-gray-700">Upload File</label>
+    <input type="file" name="file_publikasi" id="file_publikasi" class="border rounded p-2 w-full">
+    <p class="text-sm text-gray-500">Atau isi link di bawah ini:</p>
+    <input type="url" name="file_url" placeholder="https://example.com/file.png" class="border rounded p-2 w-full mt-2">
+    </div>
+
 
 
             {{-- Input Status --}}
