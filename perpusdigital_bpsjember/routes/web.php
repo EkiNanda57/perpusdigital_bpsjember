@@ -54,4 +54,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/publikasi/unduh/{id}', [PublikasiController::class, 'unduh'])
     ->name('publikasi.unduh');
 
+    Route::patch('/publikasi/{id}/approve', [PublikasiController::class, 'approve'])->name('publikasi.approve');
+    Route::patch('/publikasi/{id}/reject', [PublikasiController::class, 'reject'])->name('publikasi.reject');
+
+
 });
