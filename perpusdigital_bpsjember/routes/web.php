@@ -6,6 +6,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\OperatorController;
 use App\Http\Controllers\PenggunaController;
+use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PublikasiController;
 
@@ -49,4 +50,13 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/publikasi/edit/{publikasi}', [PublikasiController::class, 'edit'])->name('publikasi.editpublikasi');
     Route::put('/publikasi/update/{publikasi}', [PublikasiController::class, 'update'])->name('publikasi.update');
     Route::delete('/publikasi/hapus/{publikasi}', [PublikasiController::class, 'destroy'])->name('publikasi.destroy');
+});
+
+// profil user
+Route::middleware(['auth'])->group(function () {
+    // Rute untuk menampilkan halaman profil
+    Route::get('/profile', [ProfilController::class, 'show'])->name('profile.show');
+
+    // Rute untuk menyimpan perubahan profil
+    Route::post('/profile/update', [ProfilController::class, 'update'])->name('profile.update');
 });

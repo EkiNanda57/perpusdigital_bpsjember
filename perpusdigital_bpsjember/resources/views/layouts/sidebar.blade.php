@@ -61,7 +61,6 @@
         <!-- Header -->
         <header class="bg-white shadow py-4 px-6 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <!-- Tombol Burger (Mobile) -->
                 <button id="sidebar-toggle" class="md:hidden bg-orange-500 text-white p-2 rounded-md focus:outline-none">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
                         viewBox="0 0 24 24" stroke="currentColor">
@@ -72,13 +71,36 @@
                 <h2 class="text-xl font-semibold text-orange-500">@yield('title')</h2>
             </div>
 
-            <!-- Info User -->
-            <div>
+            {{-- Info User --}}
+            <div class="flex items-center gap-4">
                 @auth
-                    <span class="text-gray-700 font-medium">
+                    <span class="hidden sm:block text-gray-700 font-medium">
                         Halo, {{ auth()->user()->name }} ({{ ucfirst($role) }})
                     </span>
                 @endauth
+
+                <div class="relative">
+                    <button id="profile-menu-button"
+                            class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center text-orange-500
+                                focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-400">
+                        <span class="font-bold text-lg">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                    </button>
+
+                    <div id="profile-menu"
+                        class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1
+                                ring-1 ring-black ring-opacity-5 z-50">
+                        <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            Profil Saya
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}">
+                            @csrf
+                            <button type="submit"
+                                    class="w-full text-left block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -105,6 +127,22 @@
 
         toggleBtn.addEventListener('click', toggleSidebar);
         overlay.addEventListener('click', toggleSidebar);
+
+        // Dropdown Profil
+        const profileMenuButton = document.getElementById('profile-menu-button');
+        const profileMenu = document.getElementById('profile-menu');
+
+            // Tampilkan/sembunyikan menu saat tombol diklik
+            profileMenuButton.addEventListener('click', () => {
+                profileMenu.classList.toggle('hidden');
+            });
+
+            // Sembunyikan menu jika mengklik di luar area dropdown
+            window.addEventListener('click', (event) => {
+                if (!profileMenuButton.contains(event.target) && !profileMenu.contains(event.target)) {
+                    profileMenu.classList.add('hidden');
+                }
+            });
     </script>
 
 </body>
