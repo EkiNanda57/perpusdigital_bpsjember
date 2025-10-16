@@ -70,16 +70,14 @@
 
             {{-- Input Status --}}
             <div class="mb-6">
-                <label for="status" class="block text-gray-700 text-sm font-bold mb-2">
-                    Status <span class="text-red-500">*</span>
-                </label>
-                <select id="status" name="status"
-                        class="shadow border rounded-lg w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:ring-2 focus:ring-orange-500" required>
-                    <option value="tertunda" {{ old('status') == 'tertunda' ? 'selected' : '' }}>Tertunda</option>
-                    <option value="diterima" {{ old('status') == 'diterima' ? 'selected' : '' }}>Diterima</option>
-                    <option value="ditolak" {{ old('status') == 'ditolak' ? 'selected' : '' }}>Ditolak</option>
-                </select>
-            </div>
+    <label class="block text-gray-700 text-sm font-bold mb-2">
+        Status
+    </label>
+    <input type="text" value="Tertunda" disabled
+           class="shadow border rounded-lg w-full py-2 px-3 text-gray-500 bg-gray-100 cursor-not-allowed">
+    <input type="hidden" name="status" value="tertunda">
+</div>
+
 
 
             {{-- Tombol Aksi --}}

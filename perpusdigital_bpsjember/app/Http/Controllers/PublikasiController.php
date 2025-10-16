@@ -35,42 +35,56 @@ class PublikasiController extends Controller
     public function store(Request $request)
 {
     $request->validate([
-        'id_kategori' => 'required|exists:kategori,id',
-        'judul' => 'required|string|max:255',
-        'status' => 'required|in:tertunda,diterima,ditolak',
-        'file_publikasi' => 'nullable|mimes:pdf,epub,docx,xlsx,xls,png,jpg,jpeg,mp4|max:20480',
-        'file_url' => 'nullable|url',
-    ]);
+    'id_kategori' => 'required|exists:kategori,id',
+    'judul' => 'required|string|max:255',
+    'file_publikasi' => 'nullable|mimes:pdf,epub,docx,xlsx,xls,png,jpg,jpeg,mp4|max:20480',
+    'file_url' => 'nullable|url',
+]);
 
-    // Cek apakah user upload file atau isi link
+
+    // ❗ Wajib isi salah satu: file ATAU link
+    if (!$request->hasFile('file_publikasi') && !$request->filled('file_url')) {
+        return back()
+            ->withErrors(['file_publikasi' => 'Harap unggah file atau isi link publikasi.'])
+            ->withInput();
+    }
+
+    // Variabel default
     $path = null;
     $originalName = null;
     $tipeFile = null;
 
+    // Kalau user upload file
     if ($request->hasFile('file_publikasi')) {
         $file = $request->file('file_publikasi');
         $originalName = $file->getClientOriginalName();
         $path = $file->storeAs('publikasi', $originalName, 'public');
         $tipeFile = $file->extension();
-    } elseif ($request->filled('file_url')) {
+    } 
+    // Kalau user isi link
+    elseif ($request->filled('file_url')) {
         $path = $request->file_url;
         $originalName = basename($request->file_url);
-        $tipeFile = pathinfo($originalName, PATHINFO_EXTENSION);
+        $tipeFile = pathinfo($originalName, PATHINFO_EXTENSION) ?: 'url';
     }
 
+    // Simpan ke database
     Publikasi::create([
-        'id_kategori' => $request->id_kategori,
-        'judul' => $request->judul,
-        'deskripsi' => $request->deskripsi,
-        'file_path' => $path,
-        'original_name' => $originalName,
-        'tipe_file' => $tipeFile,
-        'status' => $request->status,
-        'uploaded_by' => auth()->id(),
-    ]);
+    'id_kategori' => $request->id_kategori,
+    'judul' => $request->judul,
+    'deskripsi' => $request->deskripsi,
+    'file_path' => $path,
+    'original_name' => $originalName,
+    'tipe_file' => $tipeFile,
+    'status' => 'tertunda', // ← status otomatis
+    'uploaded_by' => auth()->id(),
+]);
 
-    return redirect()->route('publikasi.publikasi')->with('success', 'Publikasi berhasil ditambahkan.');
+
+    return redirect()->route('publikasi.publikasi')
+        ->with('success', 'Publikasi berhasil ditambahkan.');
 }
+
 
 
     /**
