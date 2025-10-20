@@ -12,8 +12,22 @@ class ProfilController extends Controller
     {
         // Ambil nama user dari Auth; kalau tidak ada, pakai fallback
         $name = \Auth::check() ? \Auth::user()->name : 'Nama Pengguna';
-        $user = \Auth::user();
-        return view('profil-user.profil-user', compact('user'));
+
+        $user = Auth::user();
+        $user->refresh(); // pastikan data user ter-update
+
+        // Ambil profil berdasarkan role user
+        $profil = null;
+        if ($user->hasRole('Admin')) {
+            $profil = \App\Models\AdminProfil::where('user_id', $user->id)->first();
+        } elseif ($user->hasRole('Operator')) {
+            $profil = \App\Models\OperatorProfil::where('user_id', $user->id)->first();
+        } elseif ($user->hasRole('Pengguna')) {
+            $profil = \App\Models\PenggunaProfil::where('user_id', $user->id)->first();
+        }
+
+        // Kirim ke view
+        return view('profil-user.profil-user', compact('user', 'profil'));
     }
 
     public function update(Request $request)

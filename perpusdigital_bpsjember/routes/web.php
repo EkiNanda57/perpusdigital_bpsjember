@@ -74,3 +74,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', [ProfilController::class, 'show'])->name('profile.show');
     Route::post('/profile/update', [ProfilController::class, 'update'])->name('profile.update');
 });
+
+//--DASHBOARD ADMIN--
+Route::delete('/admin/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
+Route::get('/admin/users', [AdminController::class, 'showUsersPage'])->name('admin.users.index');

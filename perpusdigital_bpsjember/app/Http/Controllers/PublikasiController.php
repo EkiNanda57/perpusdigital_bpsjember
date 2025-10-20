@@ -55,29 +55,57 @@ class PublikasiController extends Controller
     public function store(Request $request)
 {
     $request->validate([
-        'id_kategori' => 'required|exists:kategori,id',
-        'judul' => 'required|string|max:255',
-        'file_publikasi' => 'required|mimes:pdf,epub,docx,xlsx,xls|max:10240',
-        'status' => 'required|in:tertunda,diterima,ditolak',
-    ]);
+    'id_kategori' => 'required|exists:kategori,id',
+    'judul' => 'required|string|max:255',
+    'file_publikasi' => 'nullable|mimes:pdf,epub,docx,xlsx,xls,png,jpg,jpeg,mp4|max:20480',
+    'file_url' => 'nullable|url',
+]);
 
-    $file = $request->file('file_publikasi');
-    $filename = $file->getClientOriginalName(); // ambil nama asli file
-    $path = $file->storeAs('publikasi', $filename, 'public'); // simpan dengan nama aslinya
 
+    // ❗ Wajib isi salah satu: file ATAU link
+    if (!$request->hasFile('file_publikasi') && !$request->filled('file_url')) {
+        return back()
+            ->withErrors(['file_publikasi' => 'Harap unggah file atau isi link publikasi.'])
+            ->withInput();
+    }
+
+    // Variabel default
+    $path = null;
+    $originalName = null;
+    $tipeFile = null;
+
+    // Kalau user upload file
+    if ($request->hasFile('file_publikasi')) {
+        $file = $request->file('file_publikasi');
+        $originalName = $file->getClientOriginalName();
+        $path = $file->storeAs('publikasi', $originalName, 'public');
+        $tipeFile = $file->extension();
+    } 
+    // Kalau user isi link
+    elseif ($request->filled('file_url')) {
+        $path = $request->file_url;
+        $originalName = basename($request->file_url);
+        $tipeFile = pathinfo($originalName, PATHINFO_EXTENSION) ?: 'url';
+    }
+
+    // Simpan ke database
     Publikasi::create([
-        'id_kategori' => $request->id_kategori,
-        'judul' => $request->judul,
-        'deskripsi' => $request->deskripsi,
-        'file_path' => $path,
-        'original_name' => $file->getClientOriginalName(),
-        'tipe_file' => $file->extension(),
-        'status' => $request->status,
-        'uploaded_by' => auth()->id(),
-    ]);
+    'id_kategori' => $request->id_kategori,
+    'judul' => $request->judul,
+    'deskripsi' => $request->deskripsi,
+    'file_path' => $path,
+    'original_name' => $originalName,
+    'tipe_file' => $tipeFile,
+    'status' => 'tertunda', // ← status otomatis
+    'uploaded_by' => auth()->id(),
+]);
 
-    return redirect()->route('publikasi.publikasi')->with('success', 'Publikasi berhasil ditambahkan.');
+
+    return redirect()->route('publikasi.publikasi')
+        ->with('success', 'Publikasi berhasil ditambahkan.');
 }
+
+
 
     /**
      * Menampilkan form untuk mengedit publikasi.
@@ -92,39 +120,44 @@ class PublikasiController extends Controller
      * Memperbarui publikasi.
      */
     public function update(Request $request, Publikasi $publikasi)
-    {
-       $request->validate([
-    'judul' => 'required|string|max:255',
-    'deskripsi' => 'nullable|string',
-    'id_kategori' => 'required|exists:kategoris,id',
-    'file_publikasi' => 'required|mimes:pdf,epub,docx,xlsx,xls|max:10240', // 10MB = 10240 KB
-    'status' => 'required|in:tertunda,diterima,ditolak',
-]);
+{
+    $request->validate([
+        'judul' => 'required|string|max:255',
+        'deskripsi' => 'nullable|string',
+        'id_kategori' => 'required|exists:kategori,id',
+        'file_publikasi' => 'nullable|mimes:pdf,epub,docx,xlsx,xls,png,jpg,jpeg,mp4|max:20480',
+        'file_url' => 'nullable|url',
+        'status' => 'required|in:tertunda,diterima,ditolak',
+    ]);
 
+    $path = $publikasi->file_path;
+    $originalName = $publikasi->original_name;
+    $tipeFile = $publikasi->tipe_file;
 
-        $path = $publikasi->file_path;
-        if ($request->hasFile('file')) {
-        $file = $request->file('file');
-        $originalName = $file->getClientOriginalName(); // nama asli
-        $filePath = $file->storeAs('publikasi', $originalName, 'public'); // simpan dengan nama asli
-
-        $publikasi->file_path = $filePath;
+    if ($request->hasFile('file_publikasi')) {
+        $file = $request->file('file_publikasi');
+        $originalName = $file->getClientOriginalName();
+        $path = $file->storeAs('publikasi', $originalName, 'public');
+        $tipeFile = $file->extension();
+    } elseif ($request->filled('file_url')) {
+        $path = $request->file_url;
+        $originalName = basename($request->file_url);
+        $tipeFile = pathinfo($originalName, PATHINFO_EXTENSION);
     }
 
-        
-        $publikasi->update([
-            'id_kategori' => $request->id_kategori,
-            'judul' => $request->judul,
-            'deskripsi' => $request->deskripsi,
-            'file_path' => $path,
-            'tipe_file' => $request->hasFile('file_publikasi') 
-                ? $request->file('file_publikasi')->extension()
-                : $publikasi->tipe_file,
-            'status' => $request->status,
-        ]);
+    $publikasi->update([
+        'id_kategori' => $request->id_kategori,
+        'judul' => $request->judul,
+        'deskripsi' => $request->deskripsi,
+        'file_path' => $path,
+        'original_name' => $originalName,
+        'tipe_file' => $tipeFile,
+        'status' => $request->status,
+    ]);
 
-        return redirect()->route('publikasi.publikasi')->with('success', 'Publikasi berhasil diperbarui.');
-    }
+    return redirect()->route('publikasi.publikasi')->with('success', 'Publikasi berhasil diperbarui.');
+}
+
 
     /**
      * Menghapus publikasi.
@@ -151,7 +184,20 @@ class PublikasiController extends Controller
     public function unduh($id)
 {
     $publikasi = Publikasi::findOrFail($id);
+
+    // Cek apakah file_path adalah URL (link)
+    if (filter_var($publikasi->file_path, FILTER_VALIDATE_URL)) {
+       
+        return redirect()->away($publikasi->file_path);
+    }
+
+    // Kalau bukan URL, berarti file lokal di storage
+
     $path = storage_path('app/public/' . $publikasi->file_path);
+
+    if (!file_exists($path)) {
+        return redirect()->back()->with('error', 'File tidak ditemukan di server.');
+    }
 
     return response()->download($path, $publikasi->original_name);
 }

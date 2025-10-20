@@ -3,111 +3,167 @@
 <div class="bg-gray-50 flex justify-center items-center min-h-full py-12 px-4">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow p-6 md:p-8">
 
-        <h2 class="text-xl font-semibold mb-6">Edit Profile</h2>
+        <h2 class="text-xl font-semibold mb-6 text-center md:text-center">Edit Profile</h2>
+
+        <!-- Foto Profil -->
+        <div class="flex flex-col items-center mb-6">
+            <div class="w-24 h-24 rounded-full bg-orange-100 flex items-center justify-center text-orange-500 text-3xl font-bold">
+                {{ strtoupper(substr($user->name, 0, 1)) }}
+            </div>
+        </div>
 
         <form action="{{ route('profile.update') }}" method="POST">
             @csrf
             <div class="space-y-4">
-                {{-- Nama User --}}
-                <div class="flex items-center justify-between bg-gray-100 rounded-xl p-4 mb-6">
-                    <div class="flex items-center gap-3">
-                        <div class="w-14 h-14 bg-orange-100 rounded-full flex items-center justify-center text-orange-500 font-bold text-xl">
-                            {{ strtoupper(substr($user->name, 0, 1)) }}
-                        </div>
 
-                        <div>
-                            {{-- Nama tampil --}}
-                            <h3 class="font-semibold text-gray-800" id="displayName">{{ $user->name }}</h3>
-
-                            {{-- Kolom edit nama --}}
+                {{-- NAMA LENGKAP --}}
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-2 border-orange-400 rounded-xl p-4">
+                    <div class="flex items-center gap-2 sm:gap-4 flex-1">
+                        <span class="text-sm text-black-500 w-28">Nama Lengkap</span>
+                        <div class="flex-1">
+                            <h3 id="displayName" class="font-semibold text-gray-800 truncate">{{ $user->name }}</h3>
                             <input type="text" id="editName" name="name"
                                 value="{{ old('name', $user->name) }}"
-                                class="hidden border border-gray-300 rounded-lg px-3 py-1 focus:ring focus:ring-blue-200 text-sm"
+                                class="hidden bg-transparent outline-none w-full"
                             />
                         </div>
                     </div>
 
-                    {{-- Tombol ganti nama --}}
                     <button type="button" id="editButton"
-                        class="bg-blue-500 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-600 transition">
-                        Ganti Nama
+                        class="mt-3 sm:mt-0 text-orange-500 hover:text-orange-600 transition p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 inline-block" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.232 5.232a3 3 0 014.243 4.243L7.5 21.25H3.75v-3.75L15.232 5.232z" />
+                        </svg>
                     </button>
                 </div>
 
-                {{-- Variabel untuk menampung profil --}}
-                @php
-                    $profil = null;
-                    if ($user->hasRole('Admin')) {
-                        $profil = $user->adminProfile;
-                    } elseif ($user->hasRole('Operator')) {
-                        $profil = $user->operatorProfile;
-                    } elseif ($user->hasRole('Pengguna')) {
-                        $profil = $user->penggunaProfile;
-                    }
-                @endphp
+                {{-- NIP --}}
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-2 border-orange-400 rounded-xl p-4">
+                    <div class="flex items-center gap-2 sm:gap-4 flex-1">
+                        <span class="text-sm text-black-500 w-28">NIP</span>
+                        <div class="flex-1">
+                            <p id="displayNip" class="font-semibold text-gray-800 truncate">
+                                {{ $profil->nip ?? 'Belum diisi' }}
+                            </p>
+                            <input type="text" id="nip" name="nip" maxlength="20"
+                                value="{{ old('nip', $profil->nip ?? '') }}"
+                                class="hidden bg-transparent outline-none w-full"
+                            />
+                        </div>
+                    </div>
 
-                {{-- NIP (untuk semua role) --}}
-                <div>
-                    <label for="nip" class="block text-gray-700 font-medium mb-1">NIP</label>
-                    <input type="text" id="nip" name="nip" maxlength="20" placeholder="Masukkan NIP" value="{{ old('nip', $profil->nip ?? '') }}" class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200"/>
+                    <button type="button" id="editNipButton"
+                        class="mt-3 sm:mt-0 text-orange-500 hover:text-orange-600 transition p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 inline-block" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.232 5.232a3 3 0 014.243 4.243L7.5 21.25H3.75v-3.75L15.232 5.232z" />
+                        </svg>
+                    </button>
                 </div>
 
-                {{-- Jabatan (HANYA untuk Admin) --}}
+                {{-- JABATAN --}}
                 @if ($user->hasRole('Admin'))
-                <div>
-                    <label for="jabatan" class="block text-sm font-semibold text-gray-600">Jabatan</label>
-                    <input type="text" id="jabatan" name="jabatan" placeholder="Masukkan Jabatan"
-                            value="{{ old('jabatan', $profil->jabatan ?? '') }}"
-                            class="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-200" />
-                </div>
-                @endif
+                    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-2 border-orange-400 rounded-xl p-4">
+                        <div class="flex items-center gap-2 sm:gap-4 flex-1">
+                            <span class="text-sm text-black-500 w-28">Jabatan</span>
+                            <div class="flex-1">
+                                <p id="displayJabatan" class="font-semibold text-gray-800 truncate">
+                                    {{ $profil->jabatan ?? 'Belum diisi' }}
+                                </p>
+                                <input type="text" id="jabatan" name="jabatan"
+                                    value="{{ old('jabatan', $profil->jabatan ?? '') }}"
+                                    class="hidden bg-transparent outline-none w-full"
+                                />
+                            </div>
+                        </div>
 
-                {{-- NOTIF BERHASIL --}}
-                @if (session('success'))
-                    <div id="success-alert" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-                        <span class="block sm:inline">{{ session('success') }}</span>
+                        <button type="button" id="editJabatanButton"
+                            class="mt-3 sm:mt-0 text-orange-500 hover:text-orange-600 transition p-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 inline-block" fill="none"
+                                viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15.232 5.232a3 3 0 014.243 4.243L7.5 21.25H3.75v-3.75L15.232 5.232z" />
+                            </svg>
+                        </button>
                     </div>
                 @endif
 
-                {{-- Tombol Simpan --}}
+                {{-- NOTIFIKASI --}}
+                @if (session('success'))
+                    <div id="success-alert" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4 text-center sm:text-left">
+                        <span>{{ session('success') }}</span>
+                    </div>
+                @endif
+
+                {{-- SIMPAN --}}
                 <div class="pt-4">
-                    <button type="submit" class="w-full px-4 py-2 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700">
+                    <button type="submit" class="w-full px-4 py-3 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition">
                         Simpan Perubahan
                     </button>
                 </div>
             </div>
         </form>
-
     </div>
 </div>
 
 <script>
-    // Cari elemen dengan id 'success-alert'
     const successAlert = document.getElementById('success-alert');
+    if (successAlert) setTimeout(() => successAlert.style.display = 'none', 2000);
 
-    if (successAlert) {
-        setTimeout(() => {
-            successAlert.style.display = 'none';
-        }, 2000);
+    // 🖊️ Ikon pensil
+    const pencilIcon = `
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 inline-block" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M15.232 5.232a3 3 0 014.243 4.243L7.5 21.25H3.75v-3.75L15.232 5.232z" />
+        </svg>
+    `;
+
+    // ✅ Ikon centang
+    const checkIcon = `
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 inline-block text-green-600" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+                d="M5 13l4 4L19 7" />
+        </svg>
+    `;
+
+    // 🔧 Fungsi umum agar semua field bisa edit & preview tanpa simpan
+    function setupEditableField(displayId, inputId, buttonId) {
+        const displayEl = document.getElementById(displayId);
+        const inputEl = document.getElementById(inputId);
+        const buttonEl = document.getElementById(buttonId);
+
+        buttonEl.addEventListener('click', () => {
+            const isEditing = !inputEl.classList.contains('hidden');
+
+            if (isEditing) {
+                // 🔸 Klik ikon centang → ubah teks tampilan sementara
+                displayEl.textContent = inputEl.value || 'Belum diisi';
+                inputEl.classList.add('hidden');
+                displayEl.classList.remove('hidden');
+                buttonEl.innerHTML = pencilIcon;
+            } else {
+                // 🔸 Klik ikon pensil → aktifkan input
+                inputEl.classList.remove('hidden');
+                displayEl.classList.add('hidden');
+                buttonEl.innerHTML = checkIcon;
+
+                inputEl.focus();
+                inputEl.selectionStart = inputEl.value.length;
+            }
+        });
     }
 
-    const editButton = document.getElementById('editButton');
-    const displayName = document.getElementById('displayName');
-    const editName = document.getElementById('editName');
-
-    editButton.addEventListener('click', () => {
-        if (editName.classList.contains('hidden')) {
-            // Ubah ke mode edit
-            editName.classList.remove('hidden');
-            displayName.classList.add('hidden');
-            editButton.textContent = 'Batal';
-            editName.focus();
-        } else {
-            // Kembali ke tampilan semula
-            editName.classList.add('hidden');
-            displayName.classList.remove('hidden');
-            editButton.textContent = 'Ganti Nama';
-        }
-    });
+    // 🟠 Terapkan ke setiap kolom
+    setupEditableField('displayName', 'editName', 'editButton');
+    setupEditableField('displayNip', 'nip', 'editNipButton');
+    if (document.getElementById('editJabatanButton')) {
+        setupEditableField('displayJabatan', 'jabatan', 'editJabatanButton');
+    }
 </script>
+
 @endsection
