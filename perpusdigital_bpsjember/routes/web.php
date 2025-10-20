@@ -16,6 +16,14 @@ Route::get('/', function () {
     return view('landingpage');
 });
 
+// DASHBOARD OPERATOR
+Route::get('/operator/dashboard', [PublikasiController::class, 'dashboardOperator'])
+    ->name('operator.dashboard');
+
+    
+// Arahkan URL /users ke method 'index' di dalam PenggunaController
+Route::get('/publikasi-saya', [PublikasiController::class, 'index'])->name('publikasi.index');
+
 // -- LOGIN & REGISTER --
 
 // login
@@ -50,14 +58,18 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/publikasi/edit/{publikasi}', [PublikasiController::class, 'edit'])->name('publikasi.editpublikasi');
     Route::put('/publikasi/update/{publikasi}', [PublikasiController::class, 'update'])->name('publikasi.update');
     Route::delete('/publikasi/hapus/{publikasi}', [PublikasiController::class, 'destroy'])->name('publikasi.destroy');
+    
+   
+    // =======================================================
     Route::get('/publikasi/detail/{id}', [PublikasiController::class, 'show'])
-    ->name('publikasi.detailpublikasi');
+    ->name('publikasi.show');
+    // =======================================================
+
     Route::get('/publikasi/unduh/{id}', [PublikasiController::class, 'unduh'])
     ->name('publikasi.unduh');
 
     Route::patch('/publikasi/{id}/approve', [PublikasiController::class, 'approve'])->name('publikasi.approve');
     Route::patch('/publikasi/{id}/reject', [PublikasiController::class, 'reject'])->name('publikasi.reject');
-
 
 });
 
@@ -69,3 +81,4 @@ Route::middleware(['auth'])->group(function () {
     // Rute untuk menyimpan perubahan profil
     Route::post('/profile/update', [ProfilController::class, 'update'])->name('profile.update');
 });
+

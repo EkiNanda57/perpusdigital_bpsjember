@@ -1,62 +1,96 @@
-@extends('layouts.sidebar')
+@extends('layouts.sidebar') 
 
 @section('title', 'Dashboard Operator')
 
 @section('content')
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-lg font-semibold text-gray-600">Pengguna Terdaftar</h3>
-        <p class="text-3xl font-bold mt-2">1,250</p>
-    </div>
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-lg font-semibold text-gray-600">Pendapatan Hari Ini</h3>
-        <p class="text-3xl font-bold mt-2">$ 3,450</p>
-    </div>
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-lg font-semibold text-gray-600">Pesanan Baru</h3>
-        <p class="text-3xl font-bold mt-2">82</p>
-    </div>
-    <div class="bg-white p-6 rounded-lg shadow-md">
-        <h3 class="text-lg font-semibold text-gray-600">Total Produk</h3>
-        <p class="text-3xl font-bold mt-2">512</p>
-    </div>
-</div>
+    <!-- 🌼 Statistik Cards Operator (Dengan Gaya Admin) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
 
-<div class="bg-white p-6 rounded-lg shadow-md">
-    <h3 class="text-xl font-semibold mb-4">Pengguna Terbaru</h3>
-    <div class="overflow-x-auto">
-        <table class="min-w-full bg-white">
-            <thead class="bg-gray-200">
-                <tr>
-                    <th class="py-2 px-4 text-left">Nama</th>
-                    <th class="py-2 px-4 text-left">Email</th>
-                    <th class="py-2 px-4 text-left">Peran</th>
-                    <th class="py-2 px-4 text-left">Tanggal Bergabung</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="border-b">
-                    <td class="py-2 px-4">Budi Santoso</td>
-                    <td class="py-2 px-4">budi.s@example.com</td>
-                    <td class="py-2 px-4">Admin</td>
-                    <td class="py-2 px-4">2025-10-14</td>
-                </tr>
-                <tr class="border-b bg-gray-50">
-                    <td class="py-2 px-4">Citra Lestari</td>
-                    <td class="py-2 px-4">citra.l@example.com</td>
-                    <td class="py-2 px-4">Member</td>
-                    <td class="py-2 px-4">2025-10-13</td>
-                </tr>
-                <tr class="border-b">
-                    <td class="py-2 px-4">Agus Wijaya</td>
-                    <td class="py-2 px-4">agus.w@example.com</td>
-                    <td class="py-2 px-4">Member</td>
-                    <td class="py-2 px-4">2025-10-12</td>
-                </tr>
-            </tbody>
-        </table>
+        <!-- Card 1: Total Publikasi Saya -->
+        <div class="bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-gray-700 font-medium">Total Publikasi Saya</h3>
+                    <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($jumlahPublikasi) }}</p>
+                </div>
+                <span class="text-4xl">📚</span>
+            </div>
+        </div>
+
+        <!-- Card 2: Publikasi Diterima -->
+        <div class="bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-gray-700 font-medium">Publikasi Diterima</h3>
+                    <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($jumlahDiterima) }}</p>
+                </div>
+                <span class="text-4xl">✅</span>
+            </div>
+        </div>
+
+        <!-- Card 3: Publikasi Tertunda -->
+        <div class="bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-gray-700 font-medium">Publikasi Tertunda</h3>
+                    <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($jumlahTertunda) }}</p>
+                </div>
+                <span class="text-4xl">⏳</span>
+            </div>
+        </div>
     </div>
-</div>
+
+    <!-- Tabel Publikasi Terbaru Saya (Disatukan di sini) -->
+    <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-md overflow-hidden">
+        <div class="p-6 border-b border-gray-200 flex items-center justify-between">
+            <h3 class="text-xl font-semibold text-gray-800">Publikasi Terbaru Saya</h3>
+            {{-- Nanti link ini bisa diarahkan ke halaman daftar semua publikasi --}}
+            <a href="{{ route('publikasi.index') }}" class="text-sm text-orange-700 hover:text-orange-500 transition">Lihat Semua →</a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="min-w-full text-sm text-gray-700">
+                <thead class="bg-gradient-to-r from-orange-400 to-yellow-300 text-gray-800">
+                    <tr>
+                        <th class="py-3 px-4 text-left">Judul Publikasi</th>
+                        <th class="py-3 px-4 text-left">Status</th>
+                        <th class="py-3 px-4 text-left">Tanggal Upload</th>
+                        <th class="py-3 px-4 text-left">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($recentPublications as $publication)
+                    <tr class="border-b hover:bg-orange-50 transition">
+                        <td class="py-3 px-4 font-medium">{{ Str::limit($publication->judul, 50) }}</td>
+                        <td class="py-3 px-4">
+                            {{-- Badge status berwarna --}}
+                            @if($publication->status == 'diterima')
+                                <span class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">
+                                    Diterima
+                                </span>
+                            @else
+                                <span class="px-2 py-1 text-xs font-semibold text-yellow-800 bg-yellow-200 rounded-full">
+                                    Tertunda
+                                </span>
+                            @endif
+                        </td>
+                        <td class="py-3 px-4">{{ $publication->created_at->format('d M Y') }}</td>
+                       
+                        <td class="py-3 px-4">
+                            <a href="{{ route('publikasi.show', $publication) }}" class="text-blue-600 hover:underline">Detail</a>
+                        </td>
+                    </tr>
+                    @empty
+                    <tr>
+                        <td colspan="4" class="py-4 px-4 text-center text-gray-500">
+                            Anda belum mengupload publikasi apapun.
+                        </td>
+                    </tr>
+                    @endforelse
+                </tbody>
+            </table>
+        </div>
+    </div>
 
 @endsection
+
