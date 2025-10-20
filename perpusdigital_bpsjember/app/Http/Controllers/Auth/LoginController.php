@@ -16,39 +16,45 @@ class LoginController extends Controller
     public function login(Request $request)
     {
         // 🔹 Validasi input
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        // 🔹 Cari user berdasarkan email
-        $user = \App\Models\User::where('email', $request->email)->first();
+        // 🔹 Coba login dengan kredensial
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
 
-        // 🔹 Cek apakah user ditemukan
-        if ($user && \Hash::check($request->password, $user->password)) {
-            // Login manual (bypass Auth::attempt)
-            \Auth::login($user);
+            $user = Auth::user();
+            $role = strtolower($user->roles->first()->role_name ?? 'pengguna');
 
             // 🔹 Redirect sesuai role
-            if ($user->hasRole('Admin')) {
+            if ($role === 'admin') {
                 return redirect()->route('dashboard-user.admin-dashboard')->with('success', 'Selamat datang, Admin!');
-            } elseif ($user->hasRole('Operator')) {
+            } elseif ($role === 'operator') {
                 return redirect()->route('dashboard-user.operator-dashboard')->with('success', 'Selamat datang, Operator!');
-            } elseif ($user->hasRole('Pengguna')) {
-                return redirect()->route('dashboard-user.pengguna-dashboard')->with('success', 'Selamat datang, Pengguna!');
+            } elseif ($role === 'pengguna') {
+                return redirect()->route('landingpage')->with('success', 'Selamat datang di Digital Library!');
             }
 
-            return redirect('/')->with('success', 'Login berhasil!');
+            // Default redirect
+            return redirect()->route('landingpage');
         }
 
-        return back()->withErrors(['loginError' => 'Email atau password salah.'])->withInput();
+        // Jika gagal login
+        return back()->withErrors([
+            'loginError' => 'Email atau password salah.',
+        ])->withInput();
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
+
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect('/login');
+
+        // 🔹 Setelah logout kembali ke landing page
+        return redirect('/')->with('success', 'Anda telah logout.');
     }
 }

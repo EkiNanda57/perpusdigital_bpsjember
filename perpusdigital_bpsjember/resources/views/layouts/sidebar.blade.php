@@ -9,12 +9,25 @@
 <body class="bg-gray-50 text-gray-800 min-h-screen flex relative">
 
     <!-- Sidebar -->
-    <aside id="sidebar"
-        class="bg-gradient-to-b from-orange-400 to-yellow-300 text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full
-               md:relative md:translate-x-0 transition duration-200 ease-in-out shadow-lg z-50">
+            <aside id="sidebar"
+                class="bg-gradient-to-b from-orange-400 to-yellow-300 text-white w-64 space-y-6 py-7 px-2 absolute inset-y-0 left-0 transform -translate-x-full
+                    md:relative md:translate-x-0 transition duration-200 ease-in-out shadow-lg z-50">
 
-        <!-- Logo -->
-        <a href="/" class="flex items-center space-x-3 px-4">
+                <!-- Logo -->
+                @php
+            $user = auth()->user();
+            $role = $user && $user->roles->isNotEmpty()
+                ? strtolower($user->roles->first()->role_name)
+                : 'pengguna';
+
+            $dashboardRoute = match($role) {
+                'admin' => route('dashboard-user.admin-dashboard'),
+                'operator' => route('dashboard-user.operator-dashboard'),
+                default => route('dashboard-user.pengguna-dashboard'),
+            };
+        @endphp
+
+        <a href="{{ $dashboardRoute }}" class="flex items-center space-x-3 px-4">
             <img src="{{ asset('logo/logose.png') }}" alt="Logo Perpustakaan" class="w-10 h-10 object-contain">
             <span class="text-2xl font-bold tracking-wide">Perpustakaan</span>
         </a>
