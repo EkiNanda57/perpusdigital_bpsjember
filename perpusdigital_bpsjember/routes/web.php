@@ -10,6 +10,10 @@ use App\Http\Controllers\ProfilController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PublikasiController;
 
+// ----------------------------
+// HALAMAN UTAMA (Landing Page)
+// ----------------------------
+Route::get('/', [PublikasiController::class, 'landing'])->name('landingpage');
 
 // -- HALAMAN UTAMA --
 Route::get('/', function () {
@@ -30,20 +34,21 @@ Route::get('/publikasi-saya', [PublikasiController::class, 'index'])->name('publ
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login.form');
 Route::post('/login', [LoginController::class, 'login'])->name('login');
 
-// register
-Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
+Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register.form');
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 
-// logout
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// -- DASHBOARD (DENGAN CONTROLLER MASING-MASING) --
+// ----------------------------
+// DASHBOARD & CRUD (Hanya untuk user login)
+// ----------------------------
 Route::middleware(['auth'])->group(function () {
+    // Dashboard masing-masing role
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('dashboard-user.admin-dashboard');
     Route::get('/operator/dashboard', [OperatorController::class, 'index'])->name('dashboard-user.operator-dashboard');
     Route::get('/pengguna/dashboard', [PenggunaController::class, 'index'])->name('dashboard-user.pengguna-dashboard');
 
-    // CRUD kategori (hanya untuk admin biasanya)
+    // CRUD Kategori
     Route::get('/kategori', [KategoriController::class, 'index'])->name('kategori.kategori');
     Route::get('/kategori/tambah', [KategoriController::class, 'create'])->name('kategori.addkategori');
     Route::post('/kategori/simpan', [KategoriController::class, 'store'])->name('kategori.store');
@@ -71,14 +76,24 @@ Route::middleware(['auth'])->group(function () {
     Route::patch('/publikasi/{id}/approve', [PublikasiController::class, 'approve'])->name('publikasi.approve');
     Route::patch('/publikasi/{id}/reject', [PublikasiController::class, 'reject'])->name('publikasi.reject');
 
+    Route::get('/publikasi/{kategori}', [PublikasiController::class, 'publikasipengguna'])
+    ->name('publikasi.publikasipengguna');
+    // Untuk pengguna (landing page)
+    Route::get('/publikasi-pengguna/detail/{id}', [PublikasiController::class, 'detailPengguna'])
+        ->name('publikasi.detailpublikasipengguna');
+
+
+
 });
 
-// profil user
+// ----------------------------
+// PROFIL USER (Harus Login)
+// ----------------------------
 Route::middleware(['auth'])->group(function () {
-    // Rute untuk menampilkan halaman profil
     Route::get('/profile', [ProfilController::class, 'show'])->name('profile.show');
-
-    // Rute untuk menyimpan perubahan profil
     Route::post('/profile/update', [ProfilController::class, 'update'])->name('profile.update');
 });
 
+//--DASHBOARD ADMIN--
+Route::delete('/admin/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
+Route::get('/admin/users', [AdminController::class, 'showUsersPage'])->name('admin.users.index');

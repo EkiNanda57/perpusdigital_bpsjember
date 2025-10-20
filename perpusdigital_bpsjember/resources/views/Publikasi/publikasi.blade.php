@@ -39,82 +39,78 @@
                     <th class="px-4 py-3 text-center text-sm font-semibold">Aksi</th>
                 </tr>
             </thead>
-            <tbody class="text-gray-700">
-                @forelse($publikasi as $index => $item)
-                    <tr class="border-b hover:bg-gray-50">
-                        <td class="px-4 py-3">
-                            {{ ($publikasi->currentPage() - 1) * $publikasi->perPage() + $index + 1 }}
-                        </td>
-                        <td class="px-4 py-3 font-medium">{{ $item->judul }}</td>
-                        <td class="px-4 py-3 text-sm text-gray-600">
-                            {{ $item->kategori->nama_kategori ?? 'Tanpa Kategori' }}
-                        </td>
-                        <td class="px-4 py-3">
-                            @switch($item->status)
-                                @case('tertunda')
-                                    <span class="bg-yellow-200 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Tertunda</span>
-                                    @break
-                                @case('diterima')
-                                    <span class="bg-green-200 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Diterima</span>
-                                    @break
-                                @case('ditolak')
-                                    <span class="bg-red-200 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Ditolak</span>
-                                    @break
-                                @default
-                                    <span class="bg-gray-200 text-gray-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Draft</span>
-                            @endswitch
-                        </td>
-                        <td class="px-4 py-3 text-center">
-                            @if($item->file_path)
-                                <a href="{{ route('publikasi.detailpublikasi', $item->id) }}"
-                                   class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-sm rounded-md transition duration-300">
-                                   Lihat
-                                </a>
-                            @else
-                                <span class="text-gray-400 text-sm">Tidak ada file</span>
-                            @endif
-                        </td>
-                        <td class="px-4 py-3 flex justify-center items-center gap-2">
-                            {{-- Tombol Edit (admin & operator) --}}
+            <tbody class="text-gray-700 align-middle">
+            @forelse($publikasi as $index => $item)
+                <tr class="border-b hover:bg-gray-50 align-middle">
+                    <td class="px-4 py-3 text-center align-middle">
+                        {{ ($publikasi->currentPage() - 1) * $publikasi->perPage() + $index + 1 }}
+                    </td>
+                    <td class="px-4 py-3 font-medium align-middle">{{ $item->judul }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600 align-middle">
+                        {{ $item->kategori->nama_kategori ?? 'Tanpa Kategori' }}
+                    </td>
+                    <td class="px-4 py-3 align-middle">
+                        @switch($item->status)
+                            @case('tertunda')
+                                <span class="bg-yellow-200 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Tertunda</span>
+                                @break
+                            @case('diterima')
+                                <span class="bg-green-200 text-green-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Diterima</span>
+                                @break
+                            @case('ditolak')
+                                <span class="bg-red-200 text-red-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Ditolak</span>
+                                @break
+                            @default
+                                <span class="bg-gray-200 text-gray-800 text-xs font-semibold px-2.5 py-0.5 rounded-full">Draft</span>
+                        @endswitch
+                    </td>
+                    <td class="px-4 py-3 text-center align-middle">
+                        @if($item->file_path)
+                            <a href="{{ route('publikasi.detailpublikasi', $item->id) }}" 
+                            class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-sm rounded-md transition duration-300">
+                                Lihat
+                            </a>
+                        @else
+                            <span class="text-gray-400 text-sm">Tidak ada file</span>
+                        @endif
+                    </td>
+                    <td class="px-4 py-3 align-middle">
+                        <div class="flex justify-center items-center gap-2">
                             @if(auth()->user()->hasRole('admin') || auth()->user()->hasRole('operator'))
                                 <a href="{{ route('publikasi.editpublikasi', $item->id) }}"
-                                   class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-sm rounded-md transition duration-300">
+                                class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-sm rounded-md transition duration-300">
                                     Edit
                                 </a>
                             @endif
 
-                            {{-- Tombol Validasi (admin & status tertunda) --}}
                             @if(auth()->user()->hasRole('admin') && $item->status === 'tertunda')
-                                {{-- Terima --}}
                                 <form action="{{ route('publikasi.approve', $item->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit"
-                                        class="flex items-center gap-1 bg-green-500 hover:bg-green-600 text-white px-3 py-1 text-sm rounded-md transition duration-300"
-                                        title="Terima Publikasi">
-                                        <span>Terima</span>
+                                        class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 text-sm rounded-md transition duration-300">
+                                        Terima
                                     </button>
                                 </form>
 
-                                {{-- Tolak --}}
                                 <form action="{{ route('publikasi.reject', $item->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('PATCH')
                                     <button type="submit"
-                                        class="flex items-center gap-1 bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-sm rounded-md transition duration-300"
-                                        title="Tolak Publikasi">
-                                        <span>Tolak</span>
+                                        class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 text-sm rounded-md transition duration-300">
+                                        Tolak
                                     </button>
                                 </form>
                             @endif
-                        </td>
-                    </tr>
-                @empty
-                    <tr>
-                        <td colspan="6" class="text-center text-gray-500 py-6">Belum ada data publikasi.</td>
-                    </tr>
-                @endforelse
-            </tbody>
+                        </div>
+                    </td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="6" class="text-center text-gray-500 py-6">Belum ada data publikasi.</td>
+                </tr>
+            @endforelse
+        </tbody>
         </table>
 
         {{-- Mobile Version --}}

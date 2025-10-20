@@ -204,4 +204,39 @@ class PublikasiController extends Controller
         $publikasi->update(['status' => 'ditolak']);
         return redirect()->back()->with('success', 'Publikasi ditolak.');
     }
+
+    public function landing()
+    {
+        // Ambil hanya publikasi yang sudah diterima
+        $publikasi = \App\Models\Publikasi::where('status', 'diterima')->get();
+
+        // Kirim data ke view landingpage.blade.php
+        return view('landingpage', compact('publikasi'));
+    }
+
+    public function publikasipengguna($kategori)
+{
+    // Cari ID kategori dari tabel kategori
+    $kategoriModel = \App\Models\Kategori::where('nama_kategori', $kategori)->first();
+
+    if (!$kategoriModel) {
+        abort(404, 'Kategori tidak ditemukan');
+    }
+
+    // Ambil publikasi berdasarkan kategori_id dan status
+    $publikasi = \App\Models\Publikasi::with('kategori')
+    ->whereHas('kategori', function ($query) use ($kategori) {
+        $query->where('nama_kategori', $kategori);})
+    ->where('status', 'diterima')
+    ->get();
+
+    return view('publikasi.publikasipengguna', compact('publikasi', 'kategori'));
+}
+
+public function detailPengguna($id)
+{
+    $publikasi = \App\Models\Publikasi::with('kategori')->findOrFail($id);
+    return view('publikasi.detailpublikasipengguna', compact('publikasi'));
+}
+
 }
