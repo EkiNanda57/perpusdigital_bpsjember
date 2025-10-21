@@ -11,24 +11,24 @@ use Carbon\Carbon;
 
 class PublikasiController extends Controller
 {
-    
-    
+
+
     public function index()
     {
         $user = auth()->user();
 
         if ($user->hasRole('admin')) {
-           
+
             $publikasi = Publikasi::with('kategori')->latest()->paginate(10);
         } elseif ($user->hasRole('operator')) {
-          
+
             $publikasi = Publikasi::with('kategori')
                 ->where('uploaded_by', $user->id)
                 ->whereIn('status', ['tertunda', 'diterima'])
                 ->latest()
                 ->paginate(10);
         } else {
-          
+
             $publikasi = Publikasi::with('kategori')
                 ->where('status', 'diterima')
                 ->latest()
@@ -38,7 +38,7 @@ class PublikasiController extends Controller
         return view('publikasi.publikasi', compact('publikasi'));
     }
 
-    
+
     public function create()
     {
         $kategoris = Kategori::orderBy('nama_kategori', 'asc')->get();
@@ -54,7 +54,7 @@ class PublikasiController extends Controller
             'file_url' => 'nullable|url',
         ]);
 
-      
+
         if (!$request->hasFile('file_publikasi') && !$request->filled('file_url')) {
             return back()
                 ->withErrors(['file_publikasi' => 'Harap unggah file atau isi link publikasi.'])
@@ -94,7 +94,7 @@ class PublikasiController extends Controller
             ->with('success', 'Publikasi berhasil ditambahkan.');
     }
 
-    
+
     public function edit(Publikasi $publikasi)
     {
         $kategoris = Kategori::orderBy('nama_kategori', 'asc')->get();
@@ -140,7 +140,7 @@ class PublikasiController extends Controller
         return redirect()->route('publikasi.publikasi')->with('success', 'Publikasi berhasil diperbarui.');
     }
 
-    
+
     public function destroy(Publikasi $publikasi)
     {
         Storage::disk('public')->delete($publikasi->file_path);
@@ -148,7 +148,7 @@ class PublikasiController extends Controller
         return redirect()->route('publikasi.publikasi')->with('success', 'Publikasi berhasil dihapus.');
     }
 
-    
+
     public function show($id)
     {
         $publikasi = Publikasi::with('kategori')->findOrFail($id);
@@ -173,7 +173,7 @@ class PublikasiController extends Controller
         return response()->download($path, $publikasi->original_name);
     }
 
-   
+
     public function validasi(Request $request, $id)
     {
         $publikasi = Publikasi::findOrFail($id);
@@ -214,21 +214,24 @@ class PublikasiController extends Controller
         return view('landingpage', compact('publikasi'));
     }
 
-    public function publikasipengguna($kategori)
+    public function publikasipengguna(Request $request,$kategori)
 {
     // Cari ID kategori dari tabel kategori
-    $kategoriModel = \App\Models\Kategori::where('nama_kategori', $kategori)->first();
+    $kategoriModel = \App\Models\Kategori::whereRaw('LOWER(nama_kategori) = ?', [strtolower($kategori)])->firstOrFail();
 
-    if (!$kategoriModel) {
-        abort(404, 'Kategori tidak ditemukan');
-    }
+    $query = \App\Models\Publikasi::with('kategori')
+            ->where('id_kategori', $kategoriModel->id)
+            ->where('status', 'diterima');
 
-    // Ambil publikasi berdasarkan kategori_id dan status
-    $publikasi = \App\Models\Publikasi::with('kategori')
-    ->whereHas('kategori', function ($query) use ($kategori) {
-        $query->where('nama_kategori', $kategori);})
-    ->where('status', 'diterima')
-    ->get();
+        if ($request->filled('search')) {
+            $query->where('judul', 'like', '%' . $request->search . '%');
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('created_at', $request->date);
+        }
+
+        $publikasi = $query->latest()->get();
 
     return view('publikasi.publikasipengguna', compact('publikasi', 'kategori'));
 }
