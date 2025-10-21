@@ -1,4 +1,4 @@
-@extends('layouts.sidebar')
+@extends(auth()->user()->hasRole('Pengguna') ? 'layouts.landingpages' : 'layouts.sidebar')
 @section('content')
 <div class="bg-gray-50 flex justify-center items-center min-h-full py-12 px-4">
     <div class="bg-white w-full max-w-lg rounded-2xl shadow p-6 md:p-8">
