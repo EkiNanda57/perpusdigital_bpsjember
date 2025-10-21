@@ -68,6 +68,10 @@
                                 <span class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-200 rounded-full">
                                     Diterima
                                 </span>
+                            @elseif($publication->status == 'ditolak')
+                                <span class="px-2 py-1 text-xs font-semibold text-red-800 bg-red-200 rounded-full">
+                                    Ditolak
+                                </span>
                             @else
                                 <span class="px-2 py-1 text-xs font-semibold text-yellow-800 bg-yellow-200 rounded-full">
                                     Tertunda
@@ -77,7 +81,7 @@
                         <td class="py-3 px-4">{{ $publication->created_at->format('d M Y') }}</td>
                        
                         <td class="py-3 px-4">
-                            <a href="{{ route('publikasi.show', $publication) }}" class="text-blue-600 hover:underline">Detail</a>
+                            <a href="{{ route('publikasi.detailpublikasi', $publication) }}" class="text-blue-600 hover:underline">Detail</a>
                         </td>
                     </tr>
                     @empty

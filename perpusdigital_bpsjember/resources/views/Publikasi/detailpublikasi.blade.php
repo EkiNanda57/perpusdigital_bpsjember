@@ -62,7 +62,7 @@
         </div>
 
         <div class="mt-8">
-            <a href="{{ route('publikasi.publikasi') }}"
+            <a href="{{ route('dashboard-user.operator-dashboard') }}"
                class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg">
                Kembali ke Data Publikasi
             </a>

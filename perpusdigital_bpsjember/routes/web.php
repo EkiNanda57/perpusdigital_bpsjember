@@ -15,10 +15,10 @@ use App\Http\Controllers\PublikasiController;
 // ----------------------------
 Route::get('/', [PublikasiController::class, 'landing'])->name('landingpage');
 
-// -- HALAMAN UTAMA --
-Route::get('/', function () {
-    return view('landingpage');
-});
+// // // -- HALAMAN UTAMA --
+// Route::get('/', function () {
+//     return view('landingpage');
+// });
 
 // DASHBOARD OPERATOR
 Route::get('/operator/dashboard', [PublikasiController::class, 'dashboardOperator'])
@@ -82,6 +82,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/publikasi-pengguna/detail/{id}', [PublikasiController::class, 'detailPengguna'])
         ->name('publikasi.detailpublikasipengguna');
 
+    Route::get('/publikasi/detail/{id}', [PublikasiController::class, 'show'])
+    ->name('publikasi.detailpublikasi');
 
 
 });
