@@ -47,7 +47,14 @@
                            class="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600 transition">
                            Unduh
                         </a>
-                    </div>
+            </div>
+    
+            <p class="text-gray-600 text-sm">
+                    File yang diunggah:
+                    <span class="font-semibold text-blue-900">
+                        {{ $publikasi->original_name ?? basename($publikasi->file_path) }}
+                    </span>
+                </p>
                 @else
                     <p class="text-gray-500 mt-2">Tidak ada file yang diunggah.</p>
                 @endif
