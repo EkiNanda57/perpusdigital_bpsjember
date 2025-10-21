@@ -41,14 +41,23 @@
                 <p>{{ $publikasi->user->name ?? 'Admin' }}</p>
             </div>
 
-           <div>
-        <h3 class="font-semibold text-lg text-blue-900">File Publikasi</h3>
-        @if($publikasi->file_path)
-            <div class="mt-3 flex items-center gap-4">
-             <a href="{{ route('publikasi.unduh', $publikasi->id) }}" 
-            class="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600">
-            Unduh
+<div>
+    <h3 class="font-semibold text-lg text-blue-900">File Publikasi</h3>
+    @if($publikasi->file_path)
+        <div class="mt-3 flex flex-col items-start gap-2">
+            {{-- Tombol Unduh --}}
+            <a href="{{ route('publikasi.unduh', $publikasi->id) }}" 
+               class="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600 transition">
+                Unduh
             </a>
+
+            {{-- Deskripsi tipe file --}}
+            <p class="text-gray-600 text-sm mt-1">
+                File yang diunggah bertipe 
+                <span class="font-semibold text-blue-900">
+                    {{ strtoupper($publikasi->tipe_file ?? 'Tidak diketahui') }}
+                </span>.
+            </p>
         </div>
     @else
         <p class="text-gray-500 mt-2">Tidak ada file yang diunggah.</p>
