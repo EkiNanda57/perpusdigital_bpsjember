@@ -97,9 +97,9 @@
         </div>
 
         <!-- 🔹 Lengkungan bawah -->
-        <svg class="absolute bottom-0 left-0 w-full h-24 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
-            <path fill="currentColor" d="M0,224L60,208C120,192,240,160,360,165.3C480,171,600,213,720,218.7C840,224,960,192,1080,186.7C1200,181,1320,203,1380,213.3L1440,224L1440,320L0,320Z"></path>
-        </svg>
+        <svg class="absolute bottom-[-2px] left-0 w-full h-24 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+    <path fill="currentColor" d="M0,224L60,208C120,192,240,160,360,165.3C480,171,600,213,720,218.7C840,224,960,192,1080,186.7C1200,181,1320,203,1380,213.3L1440,224L1440,320L0,320Z"></path>
+</svg>
     </section>
 
     <!-- Publikasi -->
@@ -107,76 +107,105 @@
         <h2 class="text-2xl sm:text-3xl text-orange-500 font-semibold mb-4">Publikasi</h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
-            <!-- Card Penduduk -->
-            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'penduduk']) }}" 
-            class="card rounded-xl bg-gradient-to-r from-[#01A2E9] to-[#2473BA] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
-                <img src="{{ asset('logo/Sensus Penduduk.png') }}" alt="Penduduk" class="w-32 h-32 object-contain mb-4">
-                <h3 class="text-white font-bold text-xl mb-2">Penduduk</h3>
-                <p class="text-white text-sm px-4">Mengumpulkan dan Menyajikan data dasar kependudukan sampai wilayah administrasi terkecil</p>
-            </a>
-
-            <!-- Card Pertanian -->
-            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'pertanian']) }}" 
-            class="card rounded-xl bg-gradient-to-r from-[#2AB930] to-[#88C64A] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
-                <img src="{{ asset('logo/Sensus Pertanian.png') }}" alt="Pertanian" class="w-32 h-32 object-contain mb-4">
-                <h3 class="text-white font-bold text-xl mb-2">Pertanian</h3>
-                <p class="text-white text-sm px-4">Memberikan gambaran secara aktual mengenai kondisi pertanian di Indonesia</p>
-            </a>
-
-            <!-- Card Ekonomi -->
-            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'ekonomi']) }}" 
+            <!-- Card Sosial -->
+            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'sosial']) }}" 
             class="card rounded-xl bg-gradient-to-r from-[#F7931E] to-[#FDC830] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
-                <img src="{{ asset('logo/Sensus Ekonomi.png') }}" alt="Ekonomi" class="w-32 h-32 object-contain mb-4">
-                <h3 class="text-white font-bold text-xl mb-2">Ekonomi</h3>
-                <p class="text-white text-sm px-4">Memberikan gambaran secara aktual mengenai kondisi ekonomi di seluruh lapangan usaha pertanian di Indonesia</p>
+                <img src="{{ asset('logo/LogoSosial.png') }}" alt="Sosial" class="w-32 h-32 object-contain mb-4">
+                <h3 class="text-white font-bold text-xl mb-2">SOSIAL</h3>
+                {{-- <p class="text-white text-sm px-4">Mengumpulkan dan Menyajikan data dasar kependudukan sampai wilayah administrasi terkecil</p> --}}
+            </a>
+
+            <!-- Card Produksi-->
+            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'produksi']) }}" 
+            class="card rounded-xl bg-gradient-to-r from-[#F7931E] to-[#FDC830] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
+                <img src="{{ asset('logo/LogoProduksi.png') }}" alt="Produksi" class="w-32 h-32 object-contain mb-4">
+                <h3 class="text-white font-bold text-xl mb-2">PRODUKSI</h3>
+                {{-- <p class="text-white text-sm px-4">Memberikan gambaran secara aktual mengenai kondisi pertanian di Indonesia</p> --}}
+            </a>
+
+            <!-- Card Distribusi -->
+            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'distribusi']) }}" 
+            class="card rounded-xl bg-gradient-to-r from-[#F7931E] to-[#FDC830] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
+                <img src="{{ asset('logo/LogoDistribusi.png') }}" alt="Distribusi" class="w-32 h-32 object-contain mb-4">
+                <h3 class="text-white font-bold text-xl mb-2">DISTRIBUSI</h3>
+                {{-- <p class="text-white text-sm px-4">Memberikan gambaran secara aktual mengenai kondisi ekonomi di seluruh lapangan usaha pertanian di Indonesia</p> --}}
+            </a>
+
+            <!-- Card Harga -->
+            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'harga']) }}" 
+            class="card rounded-xl bg-gradient-to-r from-[#F7931E] to-[#FDC830] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
+                <img src="{{ asset('logo/LogoHarga.png') }}" alt="Harga" class="w-32 h-32 object-contain mb-4">
+                <h3 class="text-white font-bold text-xl mb-2">HARGA</h3>
+                {{-- <p class="text-white text-sm px-4">Memberikan gambaran secara aktual mengenai kondisi ekonomi di seluruh lapangan usaha pertanian di Indonesia</p> --}}
+            </a>
+
+            <!-- Card Neraca Wilayah dan Analisis -->
+            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'neraca wilayah dan analisis']) }}" 
+            class="card rounded-xl bg-gradient-to-r from-[#F7931E] to-[#FDC830] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
+                <img src="{{ asset('logo/LogoNeraca.png') }}" alt="Neraca Wilayah dan Analisis" class="w-32 h-32 object-contain mb-4">
+                <h3 class="text-white font-bold text-xl mb-2">NERACA DAN WILAYAH</h3>
+                {{-- <p class="text-white text-sm px-4">Memberikan gambaran secara aktual mengenai kondisi ekonomi di seluruh lapangan usaha pertanian di Indonesia</p> --}}
+            </a>
+
+            <!-- Card IPDS -->
+            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'ipds']) }}" 
+            class="card rounded-xl bg-gradient-to-r from-[#F7931E] to-[#FDC830] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
+                <img src="{{ asset('logo/LogoIpds.png') }}" alt="Ipds" class="w-32 h-32 object-contain mb-4">
+                <h3 class="text-white font-bold text-xl mb-2">IPDS</h3>
+                {{-- <p class="text-white text-sm px-4">Memberikan gambaran secara aktual mengenai kondisi ekonomi di seluruh lapangan usaha pertanian di Indonesia</p> --}}
             </a>
         </div>
     </section>
 
     <!-- Footer (tidak diubah) -->
      <footer id="tentang-kami" class="mt-auto bg-gradient-to-r from-yellow-400 to-orange-400 text-white">
-        <div class="container mx-auto py-6 px-6">
-            <div class="flex items-center mb-8 pb-4 border-b border-white/40">
-                <img src="{{ asset('logo/logo-bps.png') }}" alt="Logo BPS" class="h-10 mr-4">
-                <span class="text-xl sm:text-2xl font-bold italic">BADAN PUSAT STATISTIK</span>
+    <div class="container mx-auto py-8 px-6">
+        <!-- Header Footer -->
+        <div class="flex items-center mb-8 pb-4 border-b border-white/40">
+            <img src="{{ asset('logo/logo-bps.png') }}" alt="Logo BPS" class="h-10 mr-4">
+            <span class="text-xl sm:text-2xl font-bold italic">BADAN PUSAT STATISTIK</span>
+        </div>
+
+        <!-- Grid Konten -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-10 text-sm text-center md:text-left">
+            <!-- Kolom Alamat -->
+            <div class="md:col-span-5">
+                <h3 class="font-bold text-lg mb-3">Badan Pusat Statistik Kabupaten Jember</h3>
+                <p>Jl. Cendrawasih No.20, Puring, Slawu, Kec. Patrang, Kabupaten Jember</p>
+                <p>Jawa Timur 68116, Indonesia</p>
+                <p class="pt-3">Telp (0331) 487642</p>
+                <p>Mailbox: bps3509@bps.go.id</p>
+                <div class="mt-6 flex justify-center md:justify-start">
+                    <img src="{{ asset('logo/logo_footer.png') }}" alt="BerAKHLAK Bangga Melayani Bangsa" class="w-64">
+                </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 text-sm">
-                <div>
-                    <h3 class="font-bold text-lg mb-3">Badan Pusat Statistik Kabupaten Jember</h3>
-                    <p>Jl. Cendrawasih No.20, Puring, Slawu, Kec. Patrang, Kabupaten Jember</p>
-                    <p>Jawa Timur 68116</p>
-                    <p>Indonesia</p>
-                    <p class="pt-3">Telp (0331) 487642</p>
-                    <p>Mailbox: bps3509@bps.go.id</p>
-                    <div class="mt-6">
-                        <img src="{{ asset('logo/logo_footer.png') }}" alt="BerAKHLAK Bangga Melayani Bangsa" class="w-65">
-                    </div>
-                </div>
+            <!-- Kolom Tengah (Tentang Kami) -->
+            <div class="md:col-span-3 flex flex-col items-center md:items-center">
+                <h3 class="font-bold text-lg mb-3">Tentang Kami</h3>
+                <a href="https://jemberkab.bps.go.id/id" class="block hover:text-gray-300">BPS Kabupaten Jember</a>
+                <a href="https://ppid.bps.go.id/?mfd=0000" class="block hover:text-gray-300">PPID</a>
+            </div>
 
-                <div>
-                    <h3 class="font-bold text-lg mb-3">Tentang Kami</h3>
-                    <a href="https://jemberkab.bps.go.id/id" class="block hover:text-gray-300">BPS Kabupaten Jember</a>
-                    <a href="https://ppid.bps.go.id/?mfd=0000" class="block hover:text-gray-300">PPID</a>
-                </div>
-
-                <div>
-                    <h3 class="font-bold text-lg mb-3">Sosial Media</h3>
-                    <div class="flex items-center space-x-4">
-                        <a href="https://www.instagram.com/bpsjember?igsh=b2d1Z2h2ZWl6Ympl" title="Instagram" class="hover:opacity-80">
-                            <img src="{{ asset('logo/social.png') }}" alt="Instagram" class="w-10 h-10">
-                        </a>
-                        <a href="https://www.tiktok.com/@bpsjember?_t=ZS-90YhqYibmtg&_r=1" title="Tik Tok" class="hover:opacity-80">
-                            <img src="{{ asset('logo/tik-tok.png') }}" alt="TikTok" class="w-10 h-10">
-                        </a>
-                        <a href="https://youtube.com/@bpskabupatenjember?si=SIM_ocnH3-Cet8mY" title="YouTube" class="hover:opacity-80">
-                            <img src="{{ asset('logo/youtube.png') }}" alt="YouTube" class="w-10 h-10">
-                        </a>
-                    </div>
+            <!-- Kolom Sosial Media -->
+            <div class="md:col-span-4 flex flex-col items-center md:items-end">
+                <h3 class="font-bold text-lg mb-3">Sosial Media</h3>
+                <div class="flex items-center space-x-4 justify-center md:justify-end">
+                    <a href="https://www.instagram.com/bpsjember?igsh=b2d1Z2h2ZWl6Ympl" title="Instagram" class="hover:opacity-80">
+                        <img src="{{ asset('logo/social.png') }}" alt="Instagram" class="w-10 h-10">
+                    </a>
+                    <a href="https://www.tiktok.com/@bpsjember?_t=ZS-90YhqYibmtg&_r=1" title="TikTok" class="hover:opacity-80">
+                        <img src="{{ asset('logo/tik-tok.png') }}" alt="TikTok" class="w-10 h-10">
+                    </a>
+                    <a href="https://youtube.com/@bpskabupatenjember?si=SIM_ocnH3-Cet8mY" title="YouTube" class="hover:opacity-80">
+                        <img src="{{ asset('logo/youtube.png') }}" alt="YouTube" class="w-10 h-10">
+                    </a>
                 </div>
             </div>
         </div>
-    </footer>
+    </div>
+</footer>
+
 
     <!-- Script -->
     <script>
