@@ -53,17 +53,16 @@
 
             {{-- Deskripsi tipe file --}}
             <p class="text-gray-600 text-sm mt-1">
-                File yang diunggah bertipe 
-                <span class="font-semibold text-blue-900">
-                    {{ strtoupper($publikasi->tipe_file ?? 'Tidak diketahui') }}
-                </span>.
-            </p>
+    Tipe file:
+    <span class="font-semibold text-blue-900">
+        {{ strtoupper($publikasi->tipe_file ?? 'Tidak diketahui') }}
+    </span>
+</p>
         </div>
     @else
         <p class="text-gray-500 mt-2">Tidak ada file yang diunggah.</p>
     @endif
 </div>
-
             <div>
                 <h3 class="font-semibold text-lg text-blue-900">Tanggal Upload</h3>
                 <p>{{ $publikasi->created_at->format('d M Y') }}</p>
@@ -71,11 +70,11 @@
         </div>
 
         <div class="mt-8">
-            <a href="{{ route('dashboard-user.operator-dashboard') }}"
-               class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg">
-               Kembali ke Data Publikasi
-            </a>
-        </div>
+        <a href="{{ url()->previous() }}"
+        class="bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded-lg">
+            Kembali Ke Data Publikasi
+        </a>
+    </div>
     </div>
 </div>
 @endsection
