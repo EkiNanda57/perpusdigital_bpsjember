@@ -5,7 +5,7 @@
 @section('content')
 
     <!-- 🌼 Statistik Cards Operator (Dengan Gaya Admin) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
 
         <!-- Card 1: Total Publikasi Saya -->
         <a href="{{ route('operator.publikasi') }}" class="block">
@@ -42,6 +42,18 @@
                     <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($jumlahTertunda) }}</p>
                 </div>
                 <span class="text-4xl">⏳</span>
+            </div>
+        </a>
+
+        <a href="{{ route('operator.publikasi', ['status' => 'ditolak']) }}" class="block">
+            <div class="bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 cursor-pointer">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-gray-700 font-medium">Publikasi Ditolak</h3>
+                        <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($jumlahDitolak) }}</p>
+                    </div>
+                    <span class="text-4xl">❌</span>
+                </div>
             </div>
         </a>
     </div>

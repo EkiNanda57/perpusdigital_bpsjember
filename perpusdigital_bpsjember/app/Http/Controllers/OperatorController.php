@@ -16,6 +16,7 @@ class OperatorController extends Controller
         $jumlahPublikasi = Publikasi::where('uploaded_by', $operatorId)->count();
         $jumlahDiterima  = Publikasi::where('uploaded_by', $operatorId)->where('status', 'diterima')->count();
         $jumlahTertunda  = Publikasi::where('uploaded_by', $operatorId)->where('status', 'tertunda')->count();
+        $jumlahDitolak   = Publikasi::where('uploaded_by', $operatorId)->where('status', 'ditolak')->count();
 
         $recentPublications = Publikasi::where('uploaded_by', $operatorId)
             ->latest()
@@ -26,6 +27,7 @@ class OperatorController extends Controller
             'jumlahPublikasi' => $jumlahPublikasi,
             'jumlahDiterima'  => $jumlahDiterima,
             'jumlahTertunda'  => $jumlahTertunda,
+            'jumlahDitolak'   => $jumlahDitolak,
             'recentPublications' => $recentPublications,
         ]);
     }
