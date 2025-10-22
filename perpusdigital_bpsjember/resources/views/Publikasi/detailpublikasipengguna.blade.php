@@ -39,19 +39,29 @@
                 <p>{{ $publikasi->user->name ?? 'Admin' }}</p>
             </div>
 
-            <div>
-                <h3 class="font-semibold text-lg text-blue-900">File Publikasi</h3>
-                @if($publikasi->file_path)
-                    <div class="mt-3 flex items-center gap-4">
-                        <a href="{{ route('publikasi.unduh', $publikasi->id) }}" 
-                           class="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600 transition">
-                           Unduh
-                        </a>
-                    </div>
-                @else
-                    <p class="text-gray-500 mt-2">Tidak ada file yang diunggah.</p>
-                @endif
-            </div>
+           <div>
+    <h3 class="font-semibold text-lg text-blue-900">File Publikasi</h3>
+    @if($publikasi->file_path)
+        <div class="mt-3 flex items-center gap-4">
+            <a href="{{ route('publikasi.unduh', $publikasi->id) }}" 
+               class="bg-green-500 text-white px-3 py-2 rounded hover:bg-green-600 transition">
+               Unduh
+            </a>
+        </div>
+    @endif
+</div>
+
+    
+           <p class="text-gray-600 text-sm">
+    File yang diunggah:
+    @if($publikasi->file_path)
+        <span class="font-semibold text-blue-900">
+            {{ $publikasi->original_name ?? basename($publikasi->file_path) }}
+        </span>
+    @else
+        <span class="text-gray-500">Tidak ada file yang diunggah.</span>
+    @endif
+</p>
 
             <div>
                 <h3 class="font-semibold text-lg text-blue-900">Tanggal Upload</h3>
@@ -63,7 +73,7 @@
         <div class="flex justify-end mt-8">
             <a href="{{ url()->previous() }}"
                class="bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-lg">
-               Kembali ke Data Publikasi
+               Kembali ke Data Publikasi 
             </a>
         </div>
     </div>

@@ -53,11 +53,11 @@
 
             {{-- Deskripsi tipe file --}}
             <p class="text-gray-600 text-sm mt-1">
-                File yang diunggah bertipe 
-                <span class="font-semibold text-blue-900">
-                    {{ strtoupper($publikasi->tipe_file ?? 'Tidak diketahui') }}
-                </span>.
-            </p>
+    Tipe file:
+    <span class="font-semibold text-blue-900">
+        {{ strtoupper($publikasi->tipe_file ?? 'Tidak diketahui') }}
+    </span>
+</p>
         </div>
     @else
         <p class="text-gray-500 mt-2">Tidak ada file yang diunggah.</p>
