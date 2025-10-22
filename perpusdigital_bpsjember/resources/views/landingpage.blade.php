@@ -15,13 +15,13 @@
     <header class="bg-white shadow-md fixed top-0 left-0 w-full z-40">
         <div class="container mx-auto flex justify-between items-center py-4 px-6">
             <!-- Logo -->
-            <div id="beranda" class="flex items-center space-x-2">
+            <div class="flex items-center space-x-2">
                 <img src="{{ asset('logo/logose.png') }}" alt="Logo BPS" class="w-14 h-14">
             </div>
 
             <!-- Desktop Navigation -->
             <nav class="hidden md:flex items-center space-x-8 text-orange-500 font-semibold">
-                <a href="#beranda" class="hover:text-orange-600">Beranda</a>
+                <a href="#" class="hover:text-orange-600">Beranda</a>
                 <a href="#publikasi" class="hover:text-orange-600">Publikasi</a>
                 <a href="#tentang-kami" class="hover:text-orange-600">Tentang Kami</a>
 
@@ -60,7 +60,7 @@
 
         <!-- Mobile Navigation -->
         <div id="mobile-menu" class="hidden md:hidden bg-white px-6 pb-4 space-y-3 text-orange-500 font-semibold">
-            <a href="#beranda" class="block hover:text-orange-600">Beranda</a>
+            <a href="#" class="block hover:text-orange-600">Beranda</a>
             <a href="#publikasi" class="block hover:text-orange-600">Publikasi</a>
             <a href="#tentang-kami" class="block hover:text-orange-600">Tentang Kami</a>
 
@@ -97,19 +97,19 @@
         </div>
 
         <!-- 🔹 Lengkungan bawah -->
-        <svg class="absolute bottom-[-2px] left-0 w-full h-24 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <svg id="publikasi" class="absolute bottom-[-2px] left-0 w-full h-24 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
     <path fill="currentColor" d="M0,224L60,208C120,192,240,160,360,165.3C480,171,600,213,720,218.7C840,224,960,192,1080,186.7C1200,181,1320,203,1380,213.3L1440,224L1440,320L0,320Z"></path>
 </svg>
     </section>
 
     <!-- Publikasi -->
-    <section id="publikasi" class="container mx-auto py-12 px-6 text-center">
+    <section class="container mx-auto py-12 px-6 text-center">
         <h2 class="text-2xl sm:text-3xl text-orange-500 font-semibold mb-4">Publikasi</h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             <!-- Card Sosial -->
             <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'sosial']) }}" 
-            class="card rounded-xl bg-gradient-to-r from-[#F7931E] to-[#FDC830] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
+            class="card rounded-xl bg-gradient-to-br from-orange-300 to-yellow-400 flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
                 <img src="{{ asset('logo/LogoSosial.png') }}" alt="Sosial" class="w-32 h-32 object-contain mb-4">
                 <h3 class="text-white font-bold text-xl mb-2">SOSIAL</h3>
                 {{-- <p class="text-white text-sm px-4">Mengumpulkan dan Menyajikan data dasar kependudukan sampai wilayah administrasi terkecil</p> --}}
@@ -117,7 +117,7 @@
 
             <!-- Card Produksi-->
             <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'produksi']) }}" 
-            class="card rounded-xl bg-gradient-to-r from-[#F7931E] to-[#FDC830] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
+            class="card rounded-xl bg-gradient-to-br from-orange-300 to-yellow-400 flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
                 <img src="{{ asset('logo/LogoProduksi.png') }}" alt="Produksi" class="w-32 h-32 object-contain mb-4">
                 <h3 class="text-white font-bold text-xl mb-2">PRODUKSI</h3>
                 {{-- <p class="text-white text-sm px-4">Memberikan gambaran secara aktual mengenai kondisi pertanian di Indonesia</p> --}}
@@ -125,7 +125,7 @@
 
             <!-- Card Distribusi -->
             <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'distribusi']) }}" 
-            class="card rounded-xl bg-gradient-to-r from-[#F7931E] to-[#FDC830] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
+            class="card rounded-xl bg-gradient-to-br from-orange-300 to-yellow-400 flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
                 <img src="{{ asset('logo/LogoDistribusi.png') }}" alt="Distribusi" class="w-32 h-32 object-contain mb-4">
                 <h3 class="text-white font-bold text-xl mb-2">DISTRIBUSI</h3>
                 {{-- <p class="text-white text-sm px-4">Memberikan gambaran secara aktual mengenai kondisi ekonomi di seluruh lapangan usaha pertanian di Indonesia</p> --}}
@@ -133,7 +133,7 @@
 
             <!-- Card Harga -->
             <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'harga']) }}" 
-            class="card rounded-xl bg-gradient-to-r from-[#F7931E] to-[#FDC830] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
+            class="card rounded-xl bg-gradient-to-br from-orange-300 to-yellow-400 flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
                 <img src="{{ asset('logo/LogoHarga.png') }}" alt="Harga" class="w-32 h-32 object-contain mb-4">
                 <h3 class="text-white font-bold text-xl mb-2">HARGA</h3>
                 {{-- <p class="text-white text-sm px-4">Memberikan gambaran secara aktual mengenai kondisi ekonomi di seluruh lapangan usaha pertanian di Indonesia</p> --}}
@@ -141,15 +141,15 @@
 
             <!-- Card Neraca Wilayah dan Analisis -->
             <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'neraca wilayah dan analisis']) }}" 
-            class="card rounded-xl bg-gradient-to-r from-[#F7931E] to-[#FDC830] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
+            class="card rounded-xl bg-gradient-to-br from-orange-300 to-yellow-400 flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
                 <img src="{{ asset('logo/LogoNeraca.png') }}" alt="Neraca Wilayah dan Analisis" class="w-32 h-32 object-contain mb-4">
-                <h3 class="text-white font-bold text-xl mb-2">NERACA DAN WILAYAH</h3>
+                <h3 class="text-white font-bold text-xl mb-2">NERACA WILAYAH DAN ANALISIS</h3>
                 {{-- <p class="text-white text-sm px-4">Memberikan gambaran secara aktual mengenai kondisi ekonomi di seluruh lapangan usaha pertanian di Indonesia</p> --}}
             </a>
 
             <!-- Card IPDS -->
             <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'ipds']) }}" 
-            class="card rounded-xl bg-gradient-to-r from-[#F7931E] to-[#FDC830] flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
+            class="card rounded-xl bg-gradient-to-br from-orange-300 to-yellow-400 flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
                 <img src="{{ asset('logo/LogoIpds.png') }}" alt="Ipds" class="w-32 h-32 object-contain mb-4">
                 <h3 class="text-white font-bold text-xl mb-2">IPDS</h3>
                 {{-- <p class="text-white text-sm px-4">Memberikan gambaran secara aktual mengenai kondisi ekonomi di seluruh lapangan usaha pertanian di Indonesia</p> --}}
