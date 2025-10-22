@@ -160,13 +160,6 @@
                 >
                     Operator
                 </li>
-
-                <li
-                    class="px-4 py-2 cursor-pointer hover:bg-orange-100 hover:text-orange-800"
-                    @click="selectedRole = 'Admin'; open = false"
-                >
-                    Admin
-                </li>
             </ul>
 
         </div>
