@@ -4,54 +4,15 @@
 
 @section('content')
 
-    <!-- 🌼 Statistik Cards Operator (Dengan Gaya Admin) -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-
-        <!-- Card 1: Total Publikasi Saya -->
-        <a href="{{ route('operator.publikasi') }}" class="block">
-            <div class="bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 cursor-pointer">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-gray-700 font-medium">Total Publikasi Saya</h3>
-                        <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($jumlahPublikasi) }}</p>
-                    </div>
-                    <span class="text-4xl">📚</span>
-                </div>
-            </div>
-        </a>
-
-        <!-- Card 2: Publikasi Diterima -->
-        <a href="{{ route('operator.publikasi', ['status' => 'diterima']) }}" class="block">
-            <div class="bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1 cursor-pointer">
-                <div class="flex items-center justify-between">
-                    <div>
-                        <h3 class="text-gray-700 font-medium">Publikasi Diterima</h3>
-                        <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($jumlahDiterima) }}</p>
-                    </div>
-                    <span class="text-4xl">✅</span>
-                </div>
-            </div>
-        </a>
-
-        <!-- Card 3: Publikasi Tertunda -->
-        <a href="{{ route('operator.publikasi', ['status' => 'tertunda']) }}"
-        class="block bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h3 class="text-gray-700 font-medium">Publikasi Tertunda</h3>
-                    <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($jumlahTertunda) }}</p>
-                </div>
-                <span class="text-4xl">⏳</span>
-            </div>
-        </a>
-    </div>
-
-    <!-- Tabel Publikasi Terbaru Saya (Disatukan di sini) -->
-    <div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-md overflow-hidden">
+<div class="bg-white/80 backdrop-blur-md rounded-2xl shadow-md overflow-hidden">
         <div class="p-6 border-b border-gray-200 flex items-center justify-between">
             <h3 class="text-xl font-semibold text-gray-800">Publikasi Terbaru Saya</h3>
-            {{-- Nanti link ini bisa diarahkan ke halaman daftar semua publikasi --}}
-            <a href="{{ route('operator.publikasi') }}" class="text-sm text-orange-700 hover:text-orange-500 transition">Lihat Semua →</a>
+
+            <!-- 🔍 Kolom pencarian -->
+            <div class="flex items-center space-x-2">
+                <input type="text" id="search" placeholder="Cari judul publikasi..." class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400"/>
+                <input type="date" id="date" class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400"/>
+            </div>
         </div>
         <div class="overflow-x-auto">
             <table class="min-w-full text-sm text-gray-700">
@@ -109,6 +70,67 @@
             </table>
         </div>
     </div>
+<div class="flex items-center justify-end mt-4 pr-4 text-sm text-gray-600">
+    <div class="pagination-container mr-3">
+        {{ $recentPublications->onEachSide(1)->links('pagination::tailwind') }}
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const searchInput = document.getElementById('search');
+    const dateInput = document.getElementById('date');
+    const tbody = document.querySelector('tbody');
+    const rows = tbody.querySelectorAll('tr');
+
+    // Tambahkan elemen pesan kosong (disembunyikan dulu)
+    const emptyMessage = document.createElement('tr');
+    emptyMessage.innerHTML = `
+        <td colspan="4" class="py-4 px-4 text-center text-gray-500">
+            Tidak ada data yang cocok.
+        </td>
+    `;
+    emptyMessage.style.display = 'none';
+    tbody.appendChild(emptyMessage);
+
+    function filterTable() {
+        const searchValue = searchInput.value.toLowerCase();
+        const dateValue = dateInput.value;
+        let visibleCount = 0;
+
+        rows.forEach(row => {
+            // Lewati baris pesan kosong
+            if (row === emptyMessage) return;
+
+            const title = row.children[0]?.textContent.toLowerCase();
+            const dateText = row.children[2]?.textContent.trim();
+
+            const matchSearch = title.includes(searchValue);
+            const matchDate = !dateValue || dateText.includes(formatDate(dateValue));
+
+            if (matchSearch && matchDate) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // tampilkan pesan kalau tidak ada baris yang cocok
+        emptyMessage.style.display = visibleCount === 0 ? '' : 'none';
+    }
+
+    // Format tanggal agar cocok dengan tampilan di tabel (dd Mmm yyyy)
+    function formatDate(dateStr) {
+        const options = { day: '2-digit', month: 'short', year: 'numeric' };
+        const date = new Date(dateStr);
+        return date.toLocaleDateString('en-GB', options).replace(/ /g, ' ');
+    }
+
+    searchInput.addEventListener('input', filterTable);
+    dateInput.addEventListener('change', filterTable);
+});
+</script>
+
 
 @endsection
-

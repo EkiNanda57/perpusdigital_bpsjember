@@ -20,9 +20,15 @@ class Publikasi extends Model
         'uploaded_by',
     ];
 
-        public function kategori()
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'uploaded_by');
+    }
+
+    public function kategori()
     {
         return $this->belongsTo(Kategori::class, 'id_kategori');
     }
+    
 
 }

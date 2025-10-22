@@ -68,10 +68,6 @@
     </div>
 </div>
 <div class="flex items-center justify-between mt-4 text-sm text-gray-600">
-    <div class="info-container">
-        Menampilkan {{ $users->firstItem() }} sampai {{ $users->lastItem() }} dari total {{ $users->total() }} pengguna
-    </div>
-
     <div class="pagination-container">
         {{ $users->appends(request()->query())->links('pagination::tailwind') }}
     </div>

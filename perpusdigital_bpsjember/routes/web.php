@@ -24,7 +24,7 @@ Route::get('/', [PublikasiController::class, 'landing'])->name('landingpage');
 Route::get('/operator/dashboard', [PublikasiController::class, 'dashboardOperator'])
     ->name('operator.dashboard');
 
-    
+
 // Arahkan URL /users ke method 'index' di dalam PenggunaController
 Route::get('/publikasi-saya', [PublikasiController::class, 'index'])->name('publikasi.index');
 
@@ -46,6 +46,11 @@ Route::middleware(['auth'])->group(function () {
     // Dashboard masing-masing role
     Route::get('/admin/dashboard', [AdminController::class, 'index'])->name('dashboard-user.admin-dashboard');
     Route::get('/operator/dashboard', [OperatorController::class, 'index'])->name('dashboard-user.operator-dashboard');
+    Route::get('/operator/publikasi', [OperatorController::class, 'daftarPublikasi'])
+        ->name('operator.publikasi');
+    Route::get('/operator/publikasi/{id}', [OperatorController::class, 'detailPublikasi'])
+        ->name('operator.detailpublikasi');
+
     Route::get('/pengguna/dashboard', [PenggunaController::class, 'index'])->name('dashboard-user.pengguna-dashboard');
 
     // CRUD Kategori
@@ -63,8 +68,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/publikasi/edit/{publikasi}', [PublikasiController::class, 'edit'])->name('publikasi.editpublikasi');
     Route::put('/publikasi/update/{publikasi}', [PublikasiController::class, 'update'])->name('publikasi.update');
     Route::delete('/publikasi/hapus/{publikasi}', [PublikasiController::class, 'destroy'])->name('publikasi.destroy');
-    
-   
+
+
     // =======================================================
     Route::get('/publikasi/detail/{id}', [PublikasiController::class, 'show'])
     ->name('publikasi.show');
@@ -99,3 +104,6 @@ Route::middleware(['auth'])->group(function () {
 //--DASHBOARD ADMIN--
 Route::delete('/admin/users/{user}', [AdminController::class, 'destroyUser'])->name('admin.users.destroy');
 Route::get('/admin/users', [AdminController::class, 'showUsersPage'])->name('admin.users.index');
+
+//-- DASHBOARD OPERATOR --
+Route::get('/publikasi/{id}', [PublikasiController::class, 'show'])->name('publikasi.show');

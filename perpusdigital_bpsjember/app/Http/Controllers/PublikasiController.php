@@ -12,32 +12,31 @@ use Carbon\Carbon;
 class PublikasiController extends Controller
 {
 
-
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
 
         if ($user->hasRole('admin')) {
+            $query = Publikasi::with('kategori');
 
-            $publikasi = Publikasi::with('kategori')->latest()->paginate(10);
         } elseif ($user->hasRole('operator')) {
-
-            $publikasi = Publikasi::with('kategori')
+            $query = Publikasi::with('kategori')
                 ->where('uploaded_by', $user->id)
-                ->whereIn('status', ['tertunda', 'diterima'])
-                ->latest()
-                ->paginate(10);
-        } else {
+                ->whereIn('status', ['tertunda', 'diterima']);
 
-            $publikasi = Publikasi::with('kategori')
-                ->where('status', 'diterima')
-                ->latest()
-                ->paginate(10);
+        } else {
+            $query = Publikasi::with('kategori')
+                ->where('status', 'diterima');
         }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $publikasi = $query->latest()->paginate(10);
 
         return view('publikasi.publikasi', compact('publikasi'));
     }
-
 
     public function create()
     {
@@ -186,7 +185,11 @@ class PublikasiController extends Controller
             'status' => 'required|in:diterima,ditolak',
         ]);
 
-        $publikasi->update(['status' => $request->status]);
+        $publikasi->update([
+            'status' => $request->status,
+        ], [
+            'timestamps' => false
+        ]);
 
         return redirect()->back()->with('success', 'Publikasi berhasil divalidasi sebagai ' . $request->status . '.');
     }

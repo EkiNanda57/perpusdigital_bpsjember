@@ -9,7 +9,7 @@ use App\Models\Kategori;
 
 class AdminController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
         $userCount = User::count();
         $publicationCount = Publikasi::count();

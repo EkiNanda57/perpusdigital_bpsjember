@@ -6,42 +6,50 @@
 
 <!-- 🌼 Statistik Cards -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <div class="bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
-        <div class="flex items-center justify-between">
-            <div>
-                <h3 class="text-gray-700 font-medium">Jumlah Pengguna</h3>
-                <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($userCount) }}</p>
+    <a href="{{ route('admin.users.index') }}" class="block">
+        <div class="bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-gray-700 font-medium">Jumlah Pengguna</h3>
+                    <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($userCount) }}</p>
+                </div>
+                <span class="text-4xl">👥</span>
             </div>
-            <span class="text-4xl">👥</span>
         </div>
-    </div>
-    <div class="bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
-        <div class="flex items-center justify-between">
-            <div>
-                <h3 class="text-gray-700 font-medium">Jumlah Publikasi Masuk</h3>
-                <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($publicationCount) }}</p>
+    </a>
+    <a href="{{ route('publikasi.publikasi') }}" class="block">
+        <div class="bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-gray-700 font-medium">Jumlah Publikasi Masuk</h3>
+                    <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($publicationCount) }}</p>
+                </div>
+                <span class="text-4xl">📩</span>
             </div>
-            <span class="text-4xl">📩</span>
         </div>
-    </div>
-    <div class="bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
-        <div class="flex items-center justify-between">
-            <div>
-                <h3 class="text-gray-700 font-medium">Publikasi Diterima</h3>
-                <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($acceptedPublicationCount) }}</p>
+    </a>
+    <a href="{{ route('publikasi.publikasi', ['status' => 'diterima']) }}" class="block">
+        <div class="bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-gray-700 font-medium">Publikasi Diterima</h3>
+                    <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($acceptedPublicationCount) }}</p>
+                </div>
+                <span class="text-4xl">🗳</span>
             </div>
-            <span class="text-4xl">🗳</span>
         </div>
-    </div>
-    <div class="bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
-        <div class="flex items-center justify-between">
-            <div>
-                <h3 class="text-gray-700 font-medium">Jumlah Kategori</h3>
-                <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($categoryCount) }}</p>
+    </a>
+    <a href="{{ route('kategori.kategori') }}" class="block">
+        <div class="bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-gray-700 font-medium">Jumlah Kategori</h3>
+                    <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($categoryCount) }}</p>
+                </div>
+                <span class="text-4xl">🗂</span>
             </div>
-            <span class="text-4xl">🗂</span>
         </div>
-    </div>
+    </a>
 </div>
 
 <!-- Tabel Pengguna Terbaru -->
