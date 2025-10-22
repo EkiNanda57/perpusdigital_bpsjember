@@ -116,6 +116,7 @@
                 get selectedLabel() {
                     if (this.selectedRole === 'Pengguna') return 'Pengguna';
                     if (this.selectedRole === 'Operator') return 'Operator';
+                    if (this.selectedRole === 'Admin') return 'Admin';
                     return '-- Pilih Jenis Akun --';
                 }
             }"
@@ -158,6 +159,13 @@
                     @click="selectedRole = 'Operator'; open = false"
                 >
                     Operator
+                </li>
+
+                <li
+                    class="px-4 py-2 cursor-pointer hover:bg-orange-100 hover:text-orange-800"
+                    @click="selectedRole = 'Admin'; open = false"
+                >
+                    Admin
                 </li>
             </ul>
 
