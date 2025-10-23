@@ -33,6 +33,14 @@ class PublikasiController extends Controller
             $query->where('status', $request->status);
         }
 
+        if ($request->filled('kategori')) {
+            $query->where('id_kategori', $request->kategori);
+        }
+
+        if ($request->filled('date')) {
+            $query->whereDate('created_at', $request->date);
+        }
+
         $publikasi = $query->latest()->paginate(10);
 
         return view('publikasi.publikasi', compact('publikasi'));

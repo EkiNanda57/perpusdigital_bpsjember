@@ -5,6 +5,33 @@
     {{-- Header --}}
     <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
         <h2 class="text-2xl font-bold text-orange-500 mb-4 sm:mb-0">Data Publikasi</h2>
+
+        {{-- jika role admin, muncul fitur tanggal dan kategori --}}
+        @if(auth()->user()->hasRole('admin'))
+            <div class="flex items-center space-x-2">
+                {{-- Filter kategori --}}
+                <select id="categoryFilter" name="kategori"
+                    class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400"
+                    onchange="filterPublikasi()">
+                    <option value="">Semua Kategori</option>
+                    @foreach(\App\Models\Kategori::orderBy('nama_kategori')->get() as $kategori)
+                        <option value="{{ $kategori->id }}"
+                            {{ request('kategori') == $kategori->id ? 'selected' : '' }}>
+                            {{ $kategori->nama_kategori }}
+                        </option>
+                    @endforeach
+                </select>
+
+                {{-- Filter tanggal --}}
+                <input type="date" id="dateFilter" name="date" value="{{ request('date') }}"
+                    class="border border-gray-300 rounded-lg px-3 py-1.5 text-sm
+                        focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400"
+                    onchange="filterPublikasi()">
+            </div>
+        @endif
+
+        {{-- jika role operator, hanya muncul fitur tambah publikasi saja --}}
         @if(auth()->user()->hasRole('operator'))
         <a href="{{ route('publikasi.create') }}"
            class="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-4 py-2 rounded-lg shadow-md transition duration-300 ease-in-out flex items-center">
@@ -24,7 +51,7 @@
             <p class="font-bold">Sukses!</p>
             <p>{{ session('success') }}</p>
         </div>
-    @endif  
+    @endif
 
     {{-- Tabel Data --}}
     <div class="overflow-x-auto bg-white shadow-md rounded-lg">
@@ -66,7 +93,7 @@
                     </td>
                     <td class="px-4 py-3 text-center align-middle">
                         @if($item->file_path)
-                            <a href="{{ route('publikasi.detailpublikasi', $item->id) }}" 
+                            <a href="{{ route('publikasi.detailpublikasi', $item->id) }}"
                             class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 text-sm rounded-md transition duration-300">
                                 Lihat
                             </a>
@@ -119,10 +146,10 @@
                 <div class="border rounded-lg p-4 mb-4 shadow-sm">
                     <div class="flex justify-between items-center mb-2">
                         <h3 class="font-semibold text-gray-800">{{ $item->judul }}</h3>
-                        <span class="text-xs px-2 py-1 rounded-full 
-                            @if($item->status === 'tertunda') bg-yellow-200 text-yellow-800 
-                            @elseif($item->status === 'diterima') bg-green-200 text-green-800 
-                            @elseif($item->status === 'ditolak') bg-red-200 text-red-800 
+                        <span class="text-xs px-2 py-1 rounded-full
+                            @if($item->status === 'tertunda') bg-yellow-200 text-yellow-800
+                            @elseif($item->status === 'diterima') bg-green-200 text-green-800
+                            @elseif($item->status === 'ditolak') bg-red-200 text-red-800
                             @else bg-gray-200 text-gray-800 @endif">
                             {{ ucfirst($item->status) }}
                         </span>
@@ -177,4 +204,20 @@
         {{ $publikasi->links('pagination::tailwind') }}
     </div>
 </div>
+
+<script>
+function filterPublikasi() {
+    const baseUrl = "{{ route('publikasi.publikasi') }}";
+    const kategori = document.getElementById('categoryFilter')?.value;
+    const date = document.getElementById('dateFilter')?.value;
+
+    let params = [];
+    if (kategori) params.push(`kategori=${kategori}`);
+    if (date) params.push(`date=${date}`);
+
+    const url = params.length ? `${baseUrl}?${params.join('&')}` : baseUrl;
+    window.location.href = url;
+}
+</script>
+
 @endsection

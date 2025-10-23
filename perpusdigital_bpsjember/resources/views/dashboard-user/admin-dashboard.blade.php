@@ -6,7 +6,7 @@
 
 <!-- 🌼 Statistik Cards -->
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <a href="{{ route('admin.users.index') }}" class="block">
+    <a href="{{ route('admin.users.index') }}" class="block" title="Operator: {{ number_format($operatorCount) }} | Pengguna: {{ number_format($regularUserCount) }}">
         <div class="bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
             <div class="flex items-center justify-between">
                 <div>
@@ -17,12 +17,14 @@
             </div>
         </div>
     </a>
-    <a href="{{ route('publikasi.publikasi') }}" class="block">
+    <a href="{{ route('publikasi.publikasi') }}" class="block" title="Total Seluruh Publikasi: {{ number_format($publicationCount) }}">
         <div class="bg-gradient-to-br from-orange-100 to-orange-100 p-6 rounded-2xl shadow-md hover:shadow-lg transition transform hover:-translate-y-1">
             <div class="flex items-center justify-between">
                 <div>
-                    <h3 class="text-gray-700 font-medium">Jumlah Publikasi Masuk</h3>
-                    <p class="text-3xl font-extrabold mt-1 text-gray-800">{{ number_format($publicationCount) }}</p>
+                    <h3 class="text-gray-700 font-medium">Publikasi Masuk (Hari Ini)</h3>
+                    <p class="text-3xl font-extrabold mt-1 text-gray-800">
+                        {{ number_format($publicationsTodayCount) }}
+                    </p>
                 </div>
                 <span class="text-4xl">📩</span>
             </div>

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Publikasi;
 use App\Models\Kategori;
+use Carbon\Carbon;
 
 class AdminController extends Controller
 {
@@ -17,12 +18,25 @@ class AdminController extends Controller
         $categoryCount = Kategori::count();
         $users = User::with('roles')->latest()->take(7)->get();
 
+        $operatorCount = User::whereHas('roles', function ($query) {
+            $query->where('role_name', 'operator');
+        })->count();
+
+        $regularUserCount = User::whereHas('roles', function ($query) {
+            $query->where('role_name', 'pengguna');
+        })->count();
+
+        $publicationsTodayCount = Publikasi::whereDate('created_at', Carbon::today())->count();
+
         return view('dashboard-user.admin-dashboard', compact(
             'userCount',
             'publicationCount',
             'acceptedPublicationCount',
             'categoryCount',
-            'users'
+            'users',
+            'operatorCount',
+            'regularUserCount',
+            'publicationsTodayCount'
         ));
     }
 
@@ -46,7 +60,6 @@ class AdminController extends Controller
         $users = $query->orderBy('created_at', 'desc')->paginate(8);
 
         if ($request->ajax()) {
-            // Kembalikan hanya tabelnya saja (tanpa layout)
             return response()->view('dashboard-user.tabelpengguna-admindashboard', compact('users'));
         }
 
