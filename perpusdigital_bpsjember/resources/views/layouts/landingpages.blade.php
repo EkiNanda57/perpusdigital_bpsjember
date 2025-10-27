@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Publikasi')</title>
+
+    <link rel="icon" type="image/png" href="{{ asset('logo/Logo-Digital.jpg') }}">
+
     @vite('resources/css/app.css')
 </head>
 <body class="bg-gray-50 text-gray-800 flex flex-col min-h-screen">
@@ -11,7 +14,7 @@
     <!-- Navbar Atas -->
     <header class="bg-white shadow py-4 px-6 flex justify-between items-center">
         <a href="{{ route('landingpage') }}" class="flex items-center space-x-3 hover:opacity-90 transition">
-            <img src="{{ asset('logo/logose.png') }}" alt="Logo" class="w-10 h-10 object-contain">
+            <img src="{{ asset('logo/LogoDigital.png') }}" alt="Logo" class="w-10 h-10 object-contain">
             <h1 class="text-2xl font-bold text-orange-500">Perpustakaan</h1>
         </a>
         <div class="flex items-center gap-4">

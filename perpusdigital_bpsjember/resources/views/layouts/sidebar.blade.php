@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title', 'Dashboard')</title>
+
+    <link rel="icon" type="image/png" href="{{ asset('logo/Logo-Digital.jpg') }}">
+
     @vite('resources/css/app.css')
 </head>
 <body class="bg-gray-50 text-gray-800 min-h-screen flex relative">
@@ -28,7 +31,7 @@
         @endphp
 
         <a href="{{ $dashboardRoute }}" class="flex items-center space-x-3 px-4">
-            <img src="{{ asset('logo/logose.png') }}" alt="Logo Perpustakaan" class="w-10 h-10 object-contain">
+            <img src="{{ asset('logo/LogoDigital.png') }}" alt="Logo Perpustakaan" class="w-10 h-10 object-contain">
             <span class="text-2xl font-bold tracking-wide">Perpustakaan</span>
         </a>
 

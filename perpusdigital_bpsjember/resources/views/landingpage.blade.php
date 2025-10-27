@@ -3,10 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Library - BPS Kabupaten Jember</title>
+    <title>Digital Library BPS Kabupaten Jember</title>
     <style>
         html { scroll-behavior: smooth; }
     </style>
+
+    <link rel="icon" type="image/png" href="{{ asset('logo/Logo-Digital.jpg') }}">
+
     @vite('resources/css/app.css')
 </head>
 <body class="bg-white font-sans flex flex-col min-h-screen">
@@ -16,7 +19,7 @@
         <div class="container mx-auto flex justify-between items-center py-4 px-6">
             <!-- Logo -->
             <div class="flex items-center space-x-2">
-                <img src="{{ asset('logo/logose.png') }}" alt="Logo BPS" class="w-14 h-14">
+                <img src="{{ asset('logo/LogoDigital.png') }}" alt="Logo BPS" class="w-14 h-14">
             </div>
 
             <!-- Desktop Navigation -->
@@ -75,12 +78,24 @@
     </header>
 
     <!-- Hero Section -->
-    <section class="bg-gradient-to-r from-orange-400 to-yellow-400 text-white text-center py-24 px-6 relative overflow-hidden mt-[90px]">
-        <div class="max-w-2xl mx-auto relative z-10">
-            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 leading-snug">
+    <!-- Hero Section -->
+<section class="relative mt-[90px] overflow-hidden">
+    <!-- Background image -->
+    <div 
+        class="absolute inset-0 bg-cover bg-center" 
+        style="background-image: url('{{ asset('logo/BpsJemberr.png') }}');">
+    </div>
+
+    <!-- Overlay gradasi oranye agar foto agak pudar -->
+    <div class="absolute inset-0 bg-gradient-to-r from-orange-500/80 to-yellow-400/70 mix-blend-multiply"></div>
+
+    <!-- Konten hero -->
+    <div class="relative z-10 text-white text-center py-24 px-6">
+        <div class="max-w-2xl mx-auto">
+            <h1 class="text-2xl sm:text-3xl md:text-4xl font-bold mb-2 leading-snug drop-shadow-lg">
                 Selamat Datang di Digital Library <br class="hidden sm:block">BPS Kabupaten Jember
             </h1>
-            <p class="text-base sm:text-lg mb-8">
+            <p class="text-base sm:text-lg mb-8 drop-shadow-md">
                 Penyedia publikasi internal segala kebutuhan data
             </p>
 
@@ -95,12 +110,16 @@
             </div>
             @endguest
         </div>
+    </div>
 
-        <!-- 🔹 Lengkungan bawah -->
-        <svg id="publikasi" class="absolute bottom-[-2px] left-0 w-full h-24 text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
-    <path fill="currentColor" d="M0,224L60,208C120,192,240,160,360,165.3C480,171,600,213,720,218.7C840,224,960,192,1080,186.7C1200,181,1320,203,1380,213.3L1440,224L1440,320L0,320Z"></path>
-</svg>
-    </section>
+    <!-- Lengkungan bawah -->
+    <svg id="publikasi" class="absolute bottom-[-2px] left-0 w-full h-24 text-white z-10"
+         xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
+        <path fill="currentColor" 
+              d="M0,224L60,208C120,192,240,160,360,165.3C480,171,600,213,720,218.7C840,224,960,192,1080,186.7C1200,181,1320,203,1380,213.3L1440,224L1440,320L0,320Z"></path>
+    </svg>
+</section>
+
 
     <!-- Publikasi -->
     <section class="container mx-auto py-12 px-6 text-center">

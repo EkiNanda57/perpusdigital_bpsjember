@@ -63,7 +63,7 @@
         <div class="p-6 border-b border-gray-200 flex items-center justify-between">
             <h3 class="text-xl font-semibold text-gray-800">Publikasi Terbaru Saya</h3>
             {{-- Nanti link ini bisa diarahkan ke halaman daftar semua publikasi --}}
-            <a href="{{ route('operator.publikasi') }}" class="text-sm text-orange-700 hover:text-orange-500 transition">Lihat Semua →</a>
+            <a href="{{ route('operator.publikasi') }}" class="text-sm text-orange-700 hover:text-orange-500 transition">Lihat Semua</a>
         </div>
         <div class="overflow-x-auto">
             <table class="min-w-full text-sm text-gray-700">
