@@ -70,9 +70,25 @@
             </table>
         </div>
     </div>
-<div class="flex items-center justify-end mt-4 pr-4 text-sm text-gray-600">
-    <div class="pagination-container mr-3">
-        {{ $recentPublications->onEachSide(1)->links('pagination::tailwind') }}
+<div class="mt-4 px-6" id="pagination-wrapper"> {{-- Saya tambahkan px-6 agar rata dengan tabel --}}
+    <div class="pagination-container flex items-center justify-between text-sm text-gray-600">
+
+        {{-- Info "Showing 1 to 8..." --}}
+        <div class="pagination-info">
+            @if ($recentPublications->total() > 0)
+                Menampilkan <span class="font-bold">{{ $recentPublications->firstItem() }}</span>
+                sampai <span class="font-bold">{{ $recentPublications->lastItem() }}</span>
+                dari <span class="font-bold">{{ $recentPublications->total() }}</span> hasil
+            @else
+                <span class="font-medium">Tidak ada hasil ditemukan</span>
+            @endif
+        </div>
+
+        {{-- Tombol Pagination --}}
+        <div class="pagination-links">
+            {{ $recentPublications->onEachSide(1)->links('pagination::tailwind') }}
+        </div>
+
     </div>
 </div>
 

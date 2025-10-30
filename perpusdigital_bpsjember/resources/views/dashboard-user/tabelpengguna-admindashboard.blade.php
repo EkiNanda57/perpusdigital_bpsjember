@@ -67,9 +67,21 @@
         </table>
     </div>
 </div>
-<div class="flex items-center justify-between mt-4 text-sm text-gray-600">
-    <div class="pagination-container">
-        {{ $users->appends(request()->query())->links('pagination::tailwind') }}
+<div class="mt-4" id="pagination-wrapper">
+    <div class="pagination-container flex items-center justify-between text-sm text-gray-600">
+
+        {{-- Info "Showing 1 to 8..." --}}
+        <div class="pagination-info">
+            Menampilkan <span class="font-bold">{{ $users->firstItem() }}</span>
+            sampai <span class="font-bold">{{ $users->lastItem() }}</span>
+            dari <span class="font-bold">{{ $users->total() }}</span> hasil
+        </div>
+
+        {{-- Tombol Pagination --}}
+        <div class="pagination-links">
+            {{ $users->appends(request()->query())->links('pagination::tailwind') }}
+        </div>
+
     </div>
 </div>
 
@@ -80,7 +92,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const dateInput = document.getElementById('date');
     const tableContainer = document.getElementById('users-table');
     const paginationContainer = document.querySelector('.pagination-container');
-    const infoContainer = document.querySelector('.info-container');
 
     function fetchUsers(page = 1) {
         const search = searchInput.value;
@@ -98,13 +109,12 @@ document.addEventListener('DOMContentLoaded', function () {
             const newTable = newDoc.querySelector('#users-table').innerHTML;
             tableContainer.innerHTML = newTable;
 
-            // Ganti info jumlah data
-            const newInfo = newDoc.querySelector('.info-container').innerHTML;
-            infoContainer.innerHTML = newInfo;
-
             // Ganti pagination
-            const newPagination = newDoc.querySelector('.pagination-container').innerHTML;
-            paginationContainer.innerHTML = newPagination;
+            const newPaginationInfo = newDoc.querySelector('.pagination-info').innerHTML;
+            const newPaginationLinks = newDoc.querySelector('.pagination-links').innerHTML;
+
+            paginationContainer.querySelector('.pagination-info').innerHTML = newPaginationInfo;
+            paginationContainer.querySelector('.pagination-links').innerHTML = newPaginationLinks;
 
             // Aktifkan ulang event untuk tombol pagination
             attachPaginationEvents();
