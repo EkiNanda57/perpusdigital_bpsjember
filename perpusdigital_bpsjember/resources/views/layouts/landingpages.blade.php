@@ -20,7 +20,10 @@
         <div class="flex items-center gap-4">
             @auth
                 <span class="text-gray-700 font-medium">
-                    Halo, {{ auth()->user()->name }} ({{ ucfirst(auth()->user()->roles->first()->role_name ?? 'Pengguna') }})
+                    Halo,
+                    <span title="{{ ucfirst(auth()->user()->roles->first()->role_name ?? 'Pengguna') }}"  style="cursor: default;">
+                        {{ auth()->user()->name }}
+                    </span>
                 </span>
                 <div class="relative">
                     <button id="profile-menu-button"

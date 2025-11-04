@@ -19,15 +19,13 @@
                 {{-- NAMA LENGKAP --}}
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between border-2 border-orange-400 rounded-xl p-4">
                     <div class="flex items-center gap-2 sm:gap-4 flex-1">
-                        <span class="text-sm text-black-500 w-28">Nama Lengkap</span>
-                        <div class="flex-1">
-                            <h3 id="displayName" class="font-semibold text-gray-800 truncate">{{ $user->name }}</h3>
-                            <input type="text" id="editName" name="name"
-                                value="{{ old('name', $user->name) }}"
-                                class="hidden bg-transparent outline-none w-full"
-                            />
+                        <span class="text-sm text-black-500 w-28">Nama</span>
+                        <div class="flex-1 relative">
+                            <h3 id="displayName" class="font-semibold text-gray-800 truncate" title="Maksimal 12 karakter"> {{ $user->name }}</h3>
+                            <input type="text" id="editName" name="name" maxlength="12" title="Maksimal 12 karakter" value="{{ old('name', $user->name) }}" class="hidden bg-transparent outline-none w-full border border-gray-300 rounded px-2 py-1"/>
                         </div>
                     </div>
+
 
                     <button type="button" id="editButton"
                         class="mt-3 sm:mt-0 text-orange-500 hover:text-orange-600 transition p-2">
@@ -164,6 +162,21 @@
     if (document.getElementById('editJabatanButton')) {
         setupEditableField('displayJabatan', 'jabatan', 'editJabatanButton');
     }
+
+    const editName = document.getElementById('editName');
+    const nameError = document.getElementById('nameError');
+
+    if (editName && nameError) {
+        editName.addEventListener('input', function () {
+            const maxLength = 50;
+            if (this.value.length > maxLength) {
+                nameError.classList.remove('hidden');
+            } else {
+                nameError.classList.add('hidden');
+            }
+        });
+    }
+
 </script>
 
 @endsection

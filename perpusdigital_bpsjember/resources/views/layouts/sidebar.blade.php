@@ -91,7 +91,10 @@
             <div class="flex items-center gap-4">
                 @auth
                     <span class="hidden sm:block text-gray-700 font-medium">
-                        Halo, {{ auth()->user()->name }} ({{ ucfirst($role) }})
+                        Halo,
+                        <span title="{{ ucfirst($role) }}" style="cursor: default;">
+                            {{ auth()->user()->name }}
+                        </span>
                     </span>
                 @endauth
 

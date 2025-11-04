@@ -81,8 +81,8 @@
     <!-- Hero Section -->
 <section class="relative mt-[90px] overflow-hidden">
     <!-- Background image -->
-    <div 
-        class="absolute inset-0 bg-cover bg-center" 
+    <div
+        class="absolute inset-0 bg-cover bg-center"
         style="background-image: url('{{ asset('logo/BpsJemberr.png') }}');">
     </div>
 
@@ -115,7 +115,7 @@
     <!-- Lengkungan bawah -->
     <svg id="publikasi" class="absolute bottom-[-2px] left-0 w-full h-24 text-white z-10"
          xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" preserveAspectRatio="none">
-        <path fill="currentColor" 
+        <path fill="currentColor"
               d="M0,224L60,208C120,192,240,160,360,165.3C480,171,600,213,720,218.7C840,224,960,192,1080,186.7C1200,181,1320,203,1380,213.3L1440,224L1440,320L0,320Z"></path>
     </svg>
 </section>
@@ -127,7 +127,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
             <!-- Card Sosial -->
-            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'sosial']) }}" 
+            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'sosial']) }}"
             class="card rounded-xl bg-gradient-to-br from-orange-300 to-yellow-400 flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
                 <img src="{{ asset('logo/LogoSosial.png') }}" alt="Sosial" class="w-32 h-32 object-contain mb-4">
                 <h3 class="text-white font-bold text-xl mb-2">SOSIAL</h3>
@@ -135,7 +135,7 @@
             </a>
 
             <!-- Card Produksi-->
-            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'produksi']) }}" 
+            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'produksi']) }}"
             class="card rounded-xl bg-gradient-to-br from-orange-300 to-yellow-400 flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
                 <img src="{{ asset('logo/LogoProduksi.png') }}" alt="Produksi" class="w-32 h-32 object-contain mb-4">
                 <h3 class="text-white font-bold text-xl mb-2">PRODUKSI</h3>
@@ -143,7 +143,7 @@
             </a>
 
             <!-- Card Distribusi -->
-            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'distribusi']) }}" 
+            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'distribusi']) }}"
             class="card rounded-xl bg-gradient-to-br from-orange-300 to-yellow-400 flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
                 <img src="{{ asset('logo/LogoDistribusi.png') }}" alt="Distribusi" class="w-32 h-32 object-contain mb-4">
                 <h3 class="text-white font-bold text-xl mb-2">DISTRIBUSI</h3>
@@ -151,7 +151,7 @@
             </a>
 
             <!-- Card Harga -->
-            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'harga']) }}" 
+            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'harga']) }}"
             class="card rounded-xl bg-gradient-to-br from-orange-300 to-yellow-400 flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
                 <img src="{{ asset('logo/LogoHarga.png') }}" alt="Harga" class="w-32 h-32 object-contain mb-4">
                 <h3 class="text-white font-bold text-xl mb-2">HARGA</h3>
@@ -159,7 +159,7 @@
             </a>
 
             <!-- Card Neraca Wilayah dan Analisis -->
-            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'neraca wilayah dan analisis']) }}" 
+            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'neraca wilayah dan analisis']) }}"
             class="card rounded-xl bg-gradient-to-br from-orange-300 to-yellow-400 flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
                 <img src="{{ asset('logo/LogoNeraca.png') }}" alt="Neraca Wilayah dan Analisis" class="w-32 h-32 object-contain mb-4">
                 <h3 class="text-white font-bold text-xl mb-2">NERACA WILAYAH DAN ANALISIS</h3>
@@ -167,7 +167,7 @@
             </a>
 
             <!-- Card IPDS -->
-            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'ipds']) }}" 
+            <a href="{{ route('publikasi.publikasipengguna', ['kategori' => 'ipds']) }}"
             class="card rounded-xl bg-gradient-to-br from-orange-300 to-yellow-400 flex flex-col justify-between items-center py-8 h-auto hover:scale-[1.03] transition-transform duration-300 shadow-md">
                 <img src="{{ asset('logo/LogoIpds.png') }}" alt="Ipds" class="w-32 h-32 object-contain mb-4">
                 <h3 class="text-white font-bold text-xl mb-2">IPDS</h3>

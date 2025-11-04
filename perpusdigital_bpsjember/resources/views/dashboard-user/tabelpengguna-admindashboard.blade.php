@@ -26,7 +26,7 @@
                     <th class="py-3 px-4 text-left">Tanggal Bergabung</th>
                     <th class="py-3 px-4 text-left">Aksi</th>
                 </tr>
-            </thead>
+            </thead> 
             <tbody>
                 @forelse($users as $user)
                 <tr class="border-b hover:bg-orange-50 transition">
