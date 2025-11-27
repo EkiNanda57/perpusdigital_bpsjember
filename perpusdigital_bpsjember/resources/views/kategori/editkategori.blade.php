@@ -1,5 +1,7 @@
 @extends('layouts.sidebar')
 
+@section('title', 'Edit Kategori')
+
 @section('content')
 <div class="w-full px-4 sm:px-8 py-6">
     <div class="bg-white shadow rounded-lg p-6 sm:p-8 border border-gray-100 w-full">

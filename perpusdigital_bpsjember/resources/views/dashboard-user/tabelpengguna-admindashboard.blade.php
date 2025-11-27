@@ -1,6 +1,6 @@
 @extends('layouts.sidebar')
 
-@section('title', 'Dashboard Admin')
+@section('title', 'Publikasi')
 
 @section('content')
 

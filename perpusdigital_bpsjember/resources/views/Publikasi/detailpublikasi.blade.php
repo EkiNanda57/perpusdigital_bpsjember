@@ -1,5 +1,7 @@
 @extends('layouts.sidebar')
 
+@section('title', 'Detail Publikasi')
+
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="bg-white rounded-lg shadow-md p-6 border border-gray-200">

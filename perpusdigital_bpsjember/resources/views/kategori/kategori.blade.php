@@ -1,5 +1,7 @@
 @extends('layouts.sidebar')
 
+@section('title', 'Kategori')
+
 @section('content')
 <div class="container mx-auto px-4 py-8">
     <div class="flex flex-col sm:flex-row justify-between items-center mb-6">
